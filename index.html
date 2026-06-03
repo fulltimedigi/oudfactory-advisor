@@ -397,7 +397,9 @@ const LANG = {
       oud_sweet_woody:"Sweet Woody Oud",
       floral_rose_oud:"Dark Rose & Oud",
       oud_incense:"Oud & Incense",
-      oud_smoky_oriental:"Smoky Oriental Oud"
+      oud_smoky_oriental:"Smoky Oriental Oud",
+      oud_smoky_incense:"Smoky Borneo Oud",
+      musky_white_floral:"Musky White Floral"
     },
     intensities:{1:"Subtle sillage",2:"Balanced presence",3:"Strong projection"},
   },
@@ -498,7 +500,7 @@ const P = {
     descAr:"وما الجسد دون الروح إلا ترابا، فالروح شعلة للفؤاد وصفاً وحياة. عطرٌ يُجسد الذات والشخصية، ينبض برائحة مسكية بودرية تتخللها لمسات خفيفة من الورود الحالمة.",
     tags:["Musky","Floral","Vanilla","Long-lasting"],
     tagsAr:["مسكي","زهري","فانيليا","ثبات عالٍ"],
-    usage:"wear", family:"musky_floral", intensity:2, occasions:["daily","events"], tier:"mid"
+    usage:"wear", family:"musky_white_floral", intensity:2, occasions:["daily","events"], tier:"mid"
   },
   P2:{
     n:"Katana Extrait de Parfum", nAr:"عطر كتانا",
@@ -702,7 +704,7 @@ const P = {
     descAr:"عبق عود بورنيو البري في أبهى صوره. رقائق طبيعية تتميز بطابعها الترابي والدخاني العميق، لتجعل من مجلسك واحة من الأصالة.",
     tags:["Agarwood","Borneo","Wild","Resinous"],
     tagsAr:["عود","بورنيو","بري","راتنجي"],
-    usage:"burn", family:"oud_incense", intensity:3, occasions:["home","events"], tier:"mid"
+    usage:"burn", family:"oud_smoky_incense", intensity:3, occasions:["home","events"], tier:"mid"
   },
 
   /* GIFT SETS */
@@ -806,11 +808,11 @@ function scoreProduct(pid, a){
 
   /* q4 — scent family (30pts max) */
   const fm = {
-    warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4,oud_smoky_oriental:20},
-    smoky: {tobacco_smoky:30,oud_leather:28,musk_animalic:24,oud_pure:18,oud_incense:16,oud_sweet:12,oud_sweet_woody:10,floral_rose_oud:6,musky_floral:4,fresh_musky:2,floral_rose:2,oud_smoky_oriental:28},
-    fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10,oud_smoky_oriental:2},
-    floral:{floral_rose:30,floral_rose_oud:28,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8,oud_smoky_oriental:4},
-    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:26,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14,oud_smoky_oriental:10}
+    warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4,oud_smoky_oriental:20,oud_smoky_incense:20,musky_white_floral:8},
+    smoky: {tobacco_smoky:30,oud_leather:28,musk_animalic:24,oud_pure:18,oud_incense:16,oud_sweet:12,oud_sweet_woody:10,floral_rose_oud:6,musky_floral:4,fresh_musky:2,floral_rose:2,oud_smoky_oriental:28,oud_smoky_incense:24,musky_white_floral:4},
+    fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10,oud_smoky_oriental:2,oud_smoky_incense:4,musky_white_floral:18},
+    floral:{floral_rose:30,floral_rose_oud:28,musky_floral:24,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8,oud_smoky_oriental:4,oud_smoky_incense:4,musky_white_floral:23},
+    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:26,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14,oud_smoky_oriental:10,oud_smoky_incense:6,musky_white_floral:26}
   };
   s += ((fm[a.q4]||{})[p.family]||0);
 
@@ -829,9 +831,10 @@ function scoreProduct(pid, a){
   s += ((bm[a.q6]||{})[effectiveTier]||4);
 
   /* q5 — oud affinity (bonus) */
-  if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather"||p.family==="oud_smoky_oriental")) s+=5;
+  if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather"||p.family==="oud_smoky_oriental"||p.family==="oud_smoky_incense"||p.family==="oud_incense")) s+=5;
   if(a.q5==="light" && (p.family==="fresh_musky"||p.family==="floral_rose")) s+=5;
-  if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="musky_floral"||p.family==="oud_sweet_woody"||p.family==="oud_smoky_oriental")) s+=5;
+  if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="oud_sweet_woody")) s+=10;
+  if(a.q5==="moderate" && (p.family==="musky_floral"||p.family==="musky_white_floral")) s+=16;
   if(a.q5==="oil" && p.category==="Oud Oil") s+=8;
   if(a.q5==="musk" && p.family==="musk_animalic") s+=10;
 

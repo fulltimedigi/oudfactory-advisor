@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" id="html-root">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Oud Factory — Fragrance Advisor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --gold:#c8a84b;
@@ -33,16 +33,64 @@
     font-size:15px;
     line-height:1.7;
   }
+  body.lang-ar{
+    font-family:'Tajawal',sans-serif;
+    direction:rtl;
+  }
+
+  /* ARABIC FONT OVERRIDES */
+  body.lang-ar h1,
+  body.lang-ar .q-text,
+  body.lang-ar .tp-name,
+  body.lang-ar .result-header h2,
+  body.lang-ar .form-title,
+  body.lang-ar .prod-card-name{
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+  }
+  body.lang-ar .hero-eyebrow,
+  body.lang-ar .q-step,
+  body.lang-ar .section-label,
+  body.lang-ar .top-pick-label,
+  body.lang-ar .tp-category,
+  body.lang-ar .lang-btn{
+    font-family:'Tajawal',sans-serif;
+    letter-spacing:0;
+  }
+  body.lang-ar .opt{text-align:right;flex-direction:row-reverse}
+  body.lang-ar .back-row{text-align:center}
+  body.lang-ar .tp-because{border-left:none;border-right:2px solid var(--gold);padding-left:0;padding-right:16px}
+  body.lang-ar .prod-card-head{flex-direction:row-reverse}
+  body.lang-ar .prod-card-price .was{margin-left:0;margin-right:6px}
+  body.lang-ar .breadcrumb{text-align:right}
+  body.lang-ar .site-footer{direction:rtl}
+  body.lang-ar .tp-price-row{flex-direction:row-reverse}
+  body.lang-ar .tp-tags{justify-content:flex-end}
+  body.lang-ar .prod-card-tags{justify-content:flex-end}
 
   /* HEADER */
   .site-header{
     background:var(--bg);
     border-bottom:1px solid var(--border);
     padding:0 24px;
-    display:flex;align-items:center;justify-content:center;
+    display:flex;align-items:center;justify-content:space-between;
     height:60px;position:sticky;top:0;z-index:100;
   }
+  .site-header-logo{display:flex;align-items:center;gap:12px}
   .site-header img{height:36px;width:auto}
+
+  /* LANGUAGE TOGGLE */
+  .lang-btn{
+    appearance:none;border:1px solid var(--border);background:transparent;
+    color:var(--muted);cursor:pointer;
+    font-family:'Jost',sans-serif;font-size:11px;font-weight:500;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:7px 14px;
+    transition:border-color .15s,color .15s;
+    white-space:nowrap;flex-shrink:0;
+  }
+  .lang-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .lang-btn .active-lang{color:var(--gold);font-weight:600}
 
   /* BREADCRUMB */
   .breadcrumb{
@@ -52,6 +100,7 @@
   }
   .breadcrumb a{color:var(--muted);text-decoration:none}
   .breadcrumb span{color:var(--gold)}
+  body.lang-ar .breadcrumb{letter-spacing:0}
 
   /* MAIN */
   .wrap{max-width:640px;margin:0 auto;padding:0 20px 56px}
@@ -91,6 +140,7 @@
     padding:14px 32px;width:100%;
     transition:all .2s ease;display:block;text-align:center;text-decoration:none;
   }
+  body.lang-ar .btn{font-family:'Tajawal',sans-serif;letter-spacing:0;font-size:14px}
   .btn-primary{background:var(--gold);color:#0a0a0a}
   .btn-primary:hover{background:var(--gold-light)}
   .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
@@ -118,6 +168,7 @@
     display:flex;align-items:center;gap:14px;
     text-align:left;
   }
+  body.lang-ar .opt{font-family:'Tajawal',sans-serif;font-size:15px}
   .opt:hover{border-color:var(--gold);background:rgba(200,168,75,.05)}
   .opt .dot{
     width:16px;height:16px;border-radius:50%;
@@ -135,6 +186,7 @@
     margin-bottom:8px;line-height:1.3;
   }
   .result-header p{font-size:13px;color:var(--muted);line-height:1.8}
+  body.lang-ar .result-header p{font-size:14px}
 
   /* TOP PICK */
   .top-pick{
@@ -158,17 +210,24 @@
   .price-sale{font-size:22px;font-weight:600;color:var(--gold)}
   .price-original{font-size:14px;color:var(--muted2);text-decoration:line-through}
   .price-only{font-size:22px;font-weight:600;color:var(--gold)}
+  .price-sale-badge{
+    font-size:10px;font-weight:600;letter-spacing:1.5px;
+    background:var(--gold);color:#0a0a0a;
+    padding:3px 8px;text-transform:uppercase;align-self:center;
+  }
   .tp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
   .tag{
     font-size:10px;letter-spacing:1px;text-transform:uppercase;
     padding:4px 12px;border:1px solid var(--border);
     color:var(--muted);background:transparent;
   }
+  body.lang-ar .tag{letter-spacing:0;font-size:11px}
   .tp-because{
     font-size:14px;line-height:1.8;color:var(--ink);margin-bottom:24px;
     border-left:2px solid var(--gold);padding-left:16px;
     font-weight:300;
   }
+  body.lang-ar .tp-because{font-size:15px}
   .cta-section{display:flex;flex-direction:column;gap:10px}
 
   /* SECTION LABEL */
@@ -177,6 +236,7 @@
     color:var(--muted2);margin:28px 0 12px;
     padding-bottom:10px;border-bottom:1px solid var(--border);
   }
+  body.lang-ar .section-label{letter-spacing:0;font-size:12px;font-family:'Tajawal',sans-serif}
 
   /* PRODUCT CARD */
   .prod-card{
@@ -197,7 +257,18 @@
   .prod-card-detail{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
   .prod-card-detail.open{display:block}
   .prod-card-detail-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px;font-weight:300}
+  body.lang-ar .prod-card-detail-desc{font-size:14px}
   .expand-hint{font-size:11px;color:var(--muted2);margin-top:6px;letter-spacing:.5px}
+  body.lang-ar .expand-hint{letter-spacing:0}
+
+  /* WHATSAPP BTN */
+  .btn-wa{
+    background:#25D366;color:#fff;border:0;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-size:13px;letter-spacing:1px;
+  }
+  .btn-wa:hover{background:#1ebe5c}
+  .btn-wa svg{flex-shrink:0}
 
   /* FORM */
   .form-title{
@@ -227,21 +298,27 @@
   }
   .site-footer a{color:var(--muted);text-decoration:none}
   .site-footer a:hover{color:var(--gold)}
+  body.lang-ar .site-footer{letter-spacing:0;font-family:'Tajawal',sans-serif;font-size:13px}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="site-header">
-  <img src="https://www.oudfactory.com/cdn/shop/files/Brochure_Oud_Factory_rev1s__1_-1-removebg.png?v=1685612044&width=280" 
-       onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
-       alt="Oud Factory">
-  <span style="display:none;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);letter-spacing:2px">OUD FACTORY</span>
+  <div class="site-header-logo">
+    <img src="https://www.oudfactory.com/cdn/shop/files/Brochure_Oud_Factory_rev1s__1_-1-removebg.png?v=1685612044&width=280"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+         alt="Oud Factory">
+    <span style="display:none;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);letter-spacing:2px">OUD FACTORY</span>
+  </div>
+  <button class="lang-btn" id="lang-toggle" onclick="toggleLang()">
+    <span id="lang-label">EN | <span class="active-lang">AR</span></span>
+  </button>
 </header>
 
 <!-- BREADCRUMB -->
-<div class="breadcrumb">
-  <a href="https://www.oudfactory.com">Home</a> / <span>Fragrance Advisor</span>
+<div class="breadcrumb" id="breadcrumb">
+  <a href="https://www.oudfactory.com" id="bread-home">Home</a> / <span id="bread-advisor">Fragrance Advisor</span>
 </div>
 
 <!-- APP -->
@@ -253,215 +330,444 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="site-footer">
+<footer class="site-footer" id="site-footer">
   <a href="https://www.oudfactory.com">Oud Factory</a>
-  &nbsp;·&nbsp; Fragrance Advisor
-  &nbsp;·&nbsp; Built by <a href="https://fulltimedigi.com" target="_blank">FullTimeDigi</a>
+  &nbsp;·&nbsp; <span id="footer-advisor">Fragrance Advisor</span>
+  &nbsp;·&nbsp; <span id="footer-built">Built by</span> <a href="https://fulltimedigi.com" target="_blank">FullTimeDigi</a>
 </footer>
 
 <script>
-const LEAD_ENDPOINT = "";
+/* ===== LANGUAGE STRINGS ===== */
+const LANG = {
+  en: {
+    heroEyebrow: "Fragrance Advisor",
+    heroTitle: "Find Your Perfect Oud Factory Scent",
+    heroSub: "Answer six questions and we'll guide you through our collection — from rare pure ouds to modern European compositions.",
+    startBtn: "Begin the Journey",
+    questionLabel: "Question",
+    of: "of",
+    backBtn: "Back",
+    resultTitle: "Your Perfect Match",
+    resultSub: "Based on your preferences, here is your ideal Oud Factory fragrance",
+    topMatchLabel: "Top Recommendation",
+    alternativesLabel: "Close Alternatives",
+    allLabel: "Full Collection — Ranked For You",
+    shopBtn: "Shop Now",
+    whatsappBtn: "Ask on WhatsApp",
+    retakeBtn: "Retake Quiz",
+    saleLabel: "SALE",
+    wasLabel: "was",
+    breadHome: "Home",
+    breadAdvisor: "Fragrance Advisor",
+    footerBuilt: "Built by",
+    tapExpand: "Tap to expand",
+    viewProduct: "View Product",
+    matchReason_home: "For home & majlis atmosphere",
+    matchReason_gift: "A curated gifting option",
+    matchReason_wear: "A wearable personal fragrance",
+    families:{
+      oud_pure:"Pure oud character",
+      oud_leather:"Oud & leather depth",
+      tobacco_smoky:"Smoky tobacco signature",
+      oud_sweet:"Sweet oud warmth",
+      musky_floral:"Musky floral blend",
+      fresh_musky:"Fresh & clean",
+      floral_rose:"Floral rose heart",
+      musk_animalic:"Powerful natural musk",
+      oud_sweet_woody:"Sweet woody oud",
+      floral_rose_oud:"Dark rose & oud",
+      oud_incense:"Incense & agarwood",
+      oud_smoky_oriental:"Oriental smoky oud"
+    },
+    intensities:{1:"Subtle sillage",2:"Balanced presence",3:"Strong projection"},
+  },
+  ar: {
+    heroEyebrow: "مستشار العطور",
+    heroTitle: "اكتشف عطر Oud Factory المثالي لك",
+    heroSub: "أجب على ستة أسئلة وسنرشدك عبر مجموعتنا — من عود خالص نادر إلى تركيبات أوروبية عصرية.",
+    startBtn: "ابدأ الرحلة",
+    questionLabel: "سؤال",
+    of: "من",
+    backBtn: "رجوع",
+    resultTitle: "توصيتك المثالية",
+    resultSub: "بناءً على تفضيلاتك، هذا هو عطر Oud Factory الأنسب لك",
+    topMatchLabel: "التوصية الأولى",
+    alternativesLabel: "بدائل قريبة",
+    allLabel: "المجموعة الكاملة — مرتبة لك",
+    shopBtn: "تسوق الآن",
+    whatsappBtn: "اسأل على واتساب",
+    retakeBtn: "أعد الاختبار",
+    saleLabel: "خصم",
+    wasLabel: "كان",
+    breadHome: "الرئيسية",
+    breadAdvisor: "مستشار العطور",
+    footerBuilt: "بُني بواسطة",
+    tapExpand: "اضغط للتوسع",
+    viewProduct: "عرض المنتج",
+    matchReason_home: "لأجواء البيت والمجلس",
+    matchReason_gift: "خيار هدية منسق",
+    matchReason_wear: "عطر شخصي للارتداء",
+    families:{
+      oud_pure:"شخصية العود الخالص",
+      oud_leather:"عمق العود والجلد",
+      tobacco_smoky:"توقيع التبغ الدخاني",
+      oud_sweet:"دفء العود الحلو",
+      musky_floral:"مزيج المسك والأزهار",
+      fresh_musky:"منعش ونظيف",
+      floral_rose:"قلب الورد الزهري",
+      musk_animalic:"المسك الطبيعي القوي",
+      oud_sweet_woody:"عود خشبي حلو",
+      floral_rose_oud:"الوردة الداكنة والعود",
+      oud_incense:"البخور والعود",
+      oud_smoky_oriental:"عود شرقي دخاني"
+    },
+    intensities:{1:"أثر خفي",2:"حضور متوازن",3:"إسقاط قوي"},
+  }
+};
 
-/* ===== PRODUCTS — Top 12 curated from full catalog ===== */
+/* ===== LANGUAGE DETECTION & STATE ===== */
+const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+let currentLang = browserLang.startsWith('ar') ? 'ar' : 'en';
+
+function L(){ return LANG[currentLang]; }
+
+function applyLang(){
+  const html = document.getElementById('html-root');
+  const body = document.body;
+  const l = L();
+  if(currentLang === 'ar'){
+    html.setAttribute('lang','ar');
+    html.setAttribute('dir','rtl');
+    body.classList.add('lang-ar');
+  } else {
+    html.setAttribute('lang','en');
+    html.setAttribute('dir','ltr');
+    body.classList.remove('lang-ar');
+  }
+  // Update lang button label
+  if(currentLang === 'ar'){
+    document.getElementById('lang-label').innerHTML = '<span class="active-lang">AR</span> | EN';
+  } else {
+    document.getElementById('lang-label').innerHTML = 'EN | <span class="active-lang">AR</span>';
+  }
+  // Update breadcrumb
+  document.getElementById('bread-home').textContent = l.breadHome;
+  document.getElementById('bread-advisor').textContent = l.breadAdvisor;
+  // Update footer
+  document.getElementById('footer-built').textContent = l.footerBuilt;
+  document.getElementById('footer-advisor').textContent = l.breadAdvisor;
+  // Re-render current screen
+  if(state.phase === 'hero') renderHero();
+  else if(state.phase === 'question') renderQuestion();
+  else if(state.phase === 'result') renderResult();
+}
+
+function toggleLang(){
+  currentLang = currentLang === 'en' ? 'ar' : 'en';
+  applyLang();
+}
+
+/* ===== PRODUCTS — 25 products ===== */
 const P = {
-  /* PERFUMES */
+  /* PERFUMES (spray) */
   P1:{
-    n:"IL Mio Cuore Parfum",
-    category:"Extrait de Parfum",
-    sale:"186.79", was:"266.85",
+    n:"IL Mio Cuore Parfum", nAr:"إيل ميو كوري",
+    category:"Parfum", sale:"686.00", was:"980.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/il-mio-cuore-parfum",
-    desc:"A story of the human spirit — vanilla and florals open to a deeply musky heart. One of the longest-lasting in the collection. Warm, intimate, and universally beloved.",
-    tags:["Musky","Floral","Vanilla","Long-lasting","Unisex"],
-    usage:"wear", family:"musky_floral", intensity:2,
-    occasions:["daily","events"], gender:"unisex", tier:"mid"
+    desc:"A story of the human spirit — vanilla and florals open to a deeply musky heart. Warm, intimate, and universally beloved.",
+    descAr:"رواية الروح البشرية — فانيليا وأزهار تتفتح على قلب مسكي عميق. دافئ، حميمي، محبوب من الجميع.",
+    tags:["Musky","Floral","Vanilla","Long-lasting"],
+    usage:"wear", family:"musky_floral", intensity:2, occasions:["daily","events"], tier:"mid"
   },
   P2:{
-    n:"Katana Extrait de Parfum",
-    category:"Extrait de Parfum",
-    sale:"310.69", was:"443.84",
+    n:"Katana Extrait de Parfum", nAr:"كاتانا",
+    category:"Extrait de Parfum", sale:"1141.00", was:"1630.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/katana-perfume",
-    desc:"Bold, rare wild Borneo oud at the heart — layered with musky, leathery saffron blood notes. A statement scent for those who demand presence.",
-    tags:["Oud","Leathery","Saffron","Powerful","Unisex"],
-    usage:"wear", family:"oud_leather", intensity:3,
-    occasions:["events","evening"], gender:"unisex", tier:"high"
+    desc:"Rare wild Borneo oud at the heart — leathery saffron blood notes. A statement scent for those who demand presence.",
+    descAr:"عود بورنيو البري النادر في القلب — مع مسحة جلدية وزعفران. عطر لمن يريد أن يُرى ويُشعر به.",
+    tags:["Oud","Leathery","Saffron","Powerful"],
+    usage:"wear", family:"oud_leather", intensity:3, occasions:["events","evening"], tier:"luxury"
   },
   P3:{
-    n:"Tobaco Cubano Parfum",
-    category:"Parfum",
-    sale:"186.79", was:"266.85",
+    n:"Tobaco Cubano Parfum", nAr:"توباكو كوبانو",
+    category:"Parfum", sale:"686.00", was:"980.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/tobaco-cubano-parfum",
-    desc:"Rich tobacco, aged leather, amber, and black pepper — a countryside luxury with an addictive smoky depth. Among the most-requested in the collection.",
-    tags:["Tobacco","Smoky","Leathery","Amber","Unisex"],
-    usage:"wear", family:"tobacco_smoky", intensity:3,
-    occasions:["events","evening"], gender:"unisex", tier:"mid"
+    desc:"Rich tobacco, aged leather, amber, and black pepper — a countryside luxury with an addictive smoky depth.",
+    descAr:"تبغ غني، جلد معتق، عنبر وفلفل أسود — فخامة ريفية بعمق مدمن من الدخان.",
+    tags:["Tobacco","Smoky","Leathery","Amber"],
+    usage:"wear", family:"tobacco_smoky", intensity:3, occasions:["events","evening"], tier:"mid"
   },
   P4:{
-    n:"Harukaze Parfum",
-    category:"Parfum",
-    sale:"186.79", was:"266.85",
+    n:"Harukaze Parfum", nAr:"هاروكازي",
+    category:"Parfum", sale:"686.00", was:"980.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/harukaze-parfum",
-    desc:"Inspired by coastal winds — musk, ambergris, patchouli, and zesty notes create a refreshing, breezy signature ideal for warm days.",
-    tags:["Musky","Fresh","Ambergris","Light","Unisex"],
-    usage:"wear", family:"fresh_musky", intensity:1,
-    occasions:["daily"], gender:"unisex", tier:"mid"
+    desc:"Inspired by coastal winds — musk, ambergris, patchouli, and zesty notes. Refreshing and breezy.",
+    descAr:"مستوحى من نسائم الساحل — مسك وعنبر رمادي وباتشولي وحمضيات. منعش وخفيف كنسيم البحر.",
+    tags:["Musky","Fresh","Ambergris","Light"],
+    usage:"wear", family:"fresh_musky", intensity:1, occasions:["daily"], tier:"mid"
   },
   P5:{
-    n:"Coração De Rosas Parfum",
-    category:"Parfum",
-    sale:"186.79", was:"266.85",
+    n:"Coração De Rosas Parfum", nAr:"كوراساو دي روساس",
+    category:"Parfum", sale:"686.00", was:"980.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/coracao-de-rosas-parfum",
-    desc:"The founder's first creation — a passionate bouquet of roses and florals, crafted to recreate the essence of a singular, rare flower.",
-    tags:["Floral","Rose","Feminine","Elegant","Unisex"],
-    usage:"wear", family:"floral_rose", intensity:2,
-    occasions:["daily","events"], gender:"female", tier:"mid"
+    desc:"The founder's first creation — a passionate bouquet of roses and florals, crafted with love.",
+    descAr:"أول إبداعات المؤسس — باقة من الورود والأزهار، صُنعت بشغف وحب.",
+    tags:["Floral","Rose","Elegant"],
+    usage:"wear", family:"floral_rose", intensity:2, occasions:["daily","events"], tier:"mid"
   },
   P6:{
-    n:"Fumo Dolce Extrait de Parfum",
-    category:"Extrait de Parfum",
-    sale:"272.57", was:"389.38",
+    n:"Fumo Dolce Extrait de Parfum", nAr:"فومو دولتشي",
+    category:"Extrait de Parfum", sale:"1001.00", was:"1430.00",
     url:"https://www.oudfactory.com/collections/perfumes/products/fumo-dolce-extrait-de-parfum",
-    desc:"Creamy oud meets royal Omani frankincense — enriched with cocoa, vanilla, dark musk, and cedarwood. A winter signature of exceptional depth.",
-    tags:["Oud","Frankincense","Cocoa","Vanilla","Unisex"],
-    usage:"wear", family:"oud_sweet", intensity:3,
-    occasions:["events","evening"], gender:"unisex", tier:"high"
+    desc:"Creamy oud meets royal Omani frankincense — enriched with cocoa, vanilla, dark musk, and cedarwood.",
+    descAr:"عود كريمي يلتقي باللبان العُماني الملكي — مع الكاكاو والفانيليا والمسك الداكن.",
+    tags:["Oud","Frankincense","Cocoa","Vanilla"],
+    usage:"wear", family:"oud_sweet", intensity:3, occasions:["events","evening"], tier:"luxury"
+  },
+  P7:{
+    n:"Akai Kemuri Parfum", nAr:"أكاي كيموري",
+    category:"Parfum", sale:"686.00", was:"980.00",
+    url:"https://www.oudfactory.com/collections/perfumes/products/akai-kemuri",
+    desc:"A perfect balance between strength and vulnerability — a cloud of fragrant sweet smoke.",
+    descAr:"توازن مثالي بين القوة والرقة — سحابة من الدخان المعطر الحلو.",
+    tags:["Smoky","Sweet","Musky"],
+    usage:"wear", family:"oud_sweet", intensity:2, occasions:["daily","events"], tier:"mid"
+  },
+  P8:{
+    n:"Sabaku Nomad Parfum", nAr:"صحراء النوماد",
+    category:"Parfum", sale:"686.00", was:"980.00",
+    url:"https://www.oudfactory.com/collections/perfumes/products/sabaku-nomad-parfum",
+    desc:"The most complex formula ever designed — woody, smoky, oriental, with a powerful oud and spice backbone.",
+    descAr:"أكثر تركيبة معقدة على الإطلاق — خشبي، دخاني، شرقي، بقلب قوي من العود والتوابل.",
+    tags:["Oriental","Woody","Smoky","Complex"],
+    usage:"wear", family:"oud_smoky_oriental", intensity:3, occasions:["events","evening"], tier:"mid"
+  },
+  P9:{
+    n:"Moya Kvitka Eau de Parfum", nAr:"مويا كفيتكا",
+    category:"Eau de Parfum", sale:"686.00", was:"980.00",
+    url:"https://www.oudfactory.com/collections/perfumes/products/moya-kvitka-eau-de-parfum",
+    desc:"A tuberose explosion that teases your senses — designed without using actual tuberose.",
+    descAr:"انفجار من زهرة التوبروز يُثير حواسك — صُمم بدون استخدام التوبروز الحقيقي.",
+    tags:["Floral","Tuberose","Musky"],
+    usage:"wear", family:"musky_floral", intensity:2, occasions:["daily","events"], tier:"mid"
+  },
+  P10:{
+    n:"Flamme Rouge Extrait de Parfum", nAr:"فلام روج",
+    category:"Extrait de Parfum", sale:"1001.00", was:"1430.00",
+    url:"https://www.oudfactory.com/collections/perfumes/products/flamme-rouge-extrait-de-parfum",
+    desc:"Raw love of pure Oud — a rich, complex spray that honors the art of pure oud in perfume form.",
+    descAr:"حب خام للعود الخالص — بخاخ غني ومعقد يُكرّم فن العود في صورة عطر.",
+    tags:["Pure Oud","Intense","Powerful"],
+    usage:"wear", family:"oud_pure", intensity:3, occasions:["events","evening"], tier:"luxury"
   },
 
-  /* OUD OILS */
+  /* OILS */
   O1:{
-    n:"Senshi Oud Oil",
-    category:"Oud Oil",
-    sale:"150.58", was:"215.11",
+    n:"Senshi Oud Oil", nAr:"سينشي عود أويل",
+    category:"Oud Oil", sale:"553.00", was:"790.00",
     url:"https://www.oudfactory.com/collections/all/products/senshi-oil",
-    desc:"A favourite among connoisseurs — pure oud oils from around the world blended to reveal complexity over time. Intensely fragrant and extraordinarily long-lasting.",
-    tags:["Pure Oud Oil","Complex","Powerful","Long-lasting","Unisex"],
-    usage:"wear", family:"oud_pure", intensity:3,
-    occasions:["daily","events"], gender:"unisex", tier:"high"
+    desc:"Pure oud oils from around the world blended to reveal complexity over time. Intensely fragrant.",
+    descAr:"زيوت عود خالصة من أنحاء العالم، تمزج لتكشف عن تعقيد يتطور مع الوقت. عطرية بشكل استثنائي.",
+    tags:["Pure Oud","Complex","Powerful"],
+    usage:"wear", family:"oud_pure", intensity:3, occasions:["daily","events"], tier:"high"
   },
   O2:{
-    n:"Deer Musk Oil",
-    category:"Oud Oil",
-    sale:"113.41", was:"162.10",
+    n:"Deer Musk Oil", nAr:"زيت مسك الغزال",
+    category:"Oud Oil", sale:"416.50", was:"595.00",
     url:"https://www.oudfactory.com/collections/all/products/deer-musk-oil",
-    desc:"Pure natural deer musk — warm, animalic, and deeply alluring. A best-seller prized for its exceptional sillage and staying power.",
-    tags:["Pure Musk","Animalic","Warm","Powerful","Unisex"],
-    usage:"wear", family:"musk_animalic", intensity:3,
-    occasions:["daily","events"], gender:"unisex", tier:"mid"
+    desc:"Pure natural deer musk — warm, animalic, and deeply alluring. Best-seller prized for exceptional sillage.",
+    descAr:"مسك الغزال الطبيعي الخالص — دافئ، حيواني، ومغرٍ بعمق. الأكثر مبيعاً لأثره الاستثنائي.",
+    tags:["Pure Musk","Animalic","Warm","Powerful"],
+    usage:"wear", family:"musk_animalic", intensity:3, occasions:["daily","events"], tier:"mid"
   },
   O3:{
-    n:"Rosa Escura Oil",
-    category:"Oud Oil",
-    sale:"94.35", was:"134.79",
+    n:"Rosa Escura Oil", nAr:"روزا إيسكورا",
+    category:"Oud Oil", sale:"346.50", was:"495.00",
     url:"https://www.oudfactory.com/collections/all/products/rosa-escura-oil",
-    desc:"Dark rose and rich oud notes in perfect harmony — inspired by Coração De Rosas, this oil adds depth and resinous warmth to the floral signature.",
-    tags:["Rose","Oud","Dark Floral","Feminine","Unisex"],
-    usage:"wear", family:"floral_rose_oud", intensity:2,
-    occasions:["daily","events"], gender:"female", tier:"mid"
+    desc:"Dark rose and rich oud in perfect harmony — adds depth and resinous warmth to the floral signature.",
+    descAr:"وردة داكنة وعود غني في تناغم مثالي — يضيف العمق والدفء الراتنجي للتوقيع الزهري.",
+    tags:["Rose","Oud","Dark Floral"],
+    usage:"wear", family:"floral_rose_oud", intensity:2, occasions:["daily","events"], tier:"eco"
   },
   O4:{
-    n:"Thai Oud Oil",
-    category:"Oud Oil",
-    sale:"80.50", was:"114.36",
+    n:"Thai Oud Oil", nAr:"عود تايلاندي",
+    category:"Oud Oil", sale:"294.00", was:"420.00",
     url:"https://www.oudfactory.com/collections/all/products/thai-oud-oil",
-    desc:"Sweet, incensy, and woody — Thai oud in its classic form. Gentle on the senses yet long-lasting, a perfect introduction to pure oud oils.",
-    tags:["Thai Oud","Sweet","Woody","Incensy","Unisex"],
-    usage:"wear", family:"oud_sweet_woody", intensity:2,
-    occasions:["daily","home"], gender:"unisex", tier:"eco"
+    desc:"Sweet, incensy, and woody — Thai oud in its classic form. A perfect introduction to pure oud oils.",
+    descAr:"حلو، بخوري، وخشبي — العود التايلاندي في صورته الكلاسيكية. المدخل المثالي لزيوت العود.",
+    tags:["Thai Oud","Sweet","Woody"],
+    usage:"wear", family:"oud_sweet_woody", intensity:2, occasions:["daily","home"], tier:"eco"
+  },
+  O5:{
+    n:"Fumo Dolce Oil", nAr:"فومو دولتشي أويل",
+    category:"Oud Oil", sale:"458.50", was:"655.00",
+    url:"https://www.oudfactory.com/collections/all/products/fumo-dolce-oil",
+    desc:"Creamy oud with frankincense, cocoa and vanilla — the oil version of a winter classic.",
+    descAr:"عود كريمي مع لبان وكاكاو وفانيليا — نسخة الزيت من الكلاسيك الشتوي.",
+    tags:["Oud","Frankincense","Sweet","Vanilla"],
+    usage:"wear", family:"oud_sweet", intensity:3, occasions:["events","evening"], tier:"mid"
+  },
+  O6:{
+    n:"Flamme Rouge Oil", nAr:"فلام روج أويل",
+    category:"Oud Oil", sale:"458.50", was:"655.00",
+    url:"https://www.oudfactory.com/collections/all/products/flamme-rouge-oil",
+    desc:"Pure oud oil form of Flamme Rouge — raw, powerful, and extraordinarily long-lasting.",
+    descAr:"نسخة زيت العود من فلام روج — خام، قوي، واستثنائي في الثبات.",
+    tags:["Pure Oud","Powerful","Long-lasting"],
+    usage:"wear", family:"oud_pure", intensity:3, occasions:["daily","events"], tier:"mid"
+  },
+  O7:{
+    n:"Katana Oil", nAr:"كاتانا أويل",
+    category:"Oud Oil", sale:"493.50", was:"705.00",
+    url:"https://www.oudfactory.com/collections/all/products/katana-oil",
+    desc:"Wild Borneo oud oil — leathery, saffron-laced, intense. The oil form of the legendary Katana.",
+    descAr:"زيت عود بورنيو البري — جلدي، مُعصفر، مكثف. النسخة الزيتية من الكاتانا الأسطوري.",
+    tags:["Oud","Leathery","Saffron","Intense"],
+    usage:"wear", family:"oud_leather", intensity:3, occasions:["events","evening"], tier:"mid"
+  },
+  O8:{
+    n:"Cambodian Oud Oil", nAr:"عود كمبودي",
+    category:"Oud Oil", sale:"455.00", was:"650.00",
+    url:"https://www.oudfactory.com/collections/all/products/cambodian-oud-oil",
+    desc:"Pure Cambodian oud — natural sweetness with a quiet, refined glow. Like warm resin touched by sunlight.",
+    descAr:"عود كمبودي خالص — حلاوة طبيعية بلمعان هادئ ومتطور. كالراتنج الدافئ في ضوء الشمس.",
+    tags:["Cambodian Oud","Sweet","Refined"],
+    usage:"wear", family:"oud_sweet_woody", intensity:2, occasions:["daily"], tier:"mid"
   },
 
-  /* WOODS */
+  /* WOODS (burn) */
   W1:{
-    n:"Indian Gold Agarwood",
-    category:"Agarwood Chips",
-    sale:"120.80", was:"172.57",
+    n:"Indian Gold Agarwood", nAr:"عود هندي ذهبي",
+    category:"Agarwood Chips", sale:"441.00", was:"630.00",
     url:"https://www.oudfactory.com/collections/woods-incense/products/hindi-gold",
-    desc:"Premium Indian agarwood chips with a bold, complex oriental character. Burns to release an intensely rich smoke — the foundation of a serious majlis.",
-    tags:["Agarwood Chips","Indian","Oriental","Powerful","Unisex"],
-    usage:"burn", family:"oud_incense", intensity:3,
-    occasions:["home","events"], gender:"unisex", tier:"mid"
+    desc:"Premium Indian agarwood chips — bold, complex oriental character. The foundation of a serious majlis.",
+    descAr:"رقائق عود هندي فاخرة — طابع شرقي جريء ومعقد. أساس مجلس راقٍ حقيقي.",
+    tags:["Agarwood","Indian","Oriental","Bold"],
+    usage:"burn", family:"oud_incense", intensity:3, occasions:["home","events"], tier:"mid"
+  },
+  W2:{
+    n:"Malaysian Agarwood", nAr:"عود ماليزي",
+    category:"Agarwood Chips", sale:"441.00", was:"630.00",
+    url:"https://www.oudfactory.com/collections/woods-incense/products/malaysian-oud",
+    desc:"Malaysian agarwood chips — softer, fruitier, and more delicate than Indian wood. Elegant and refined.",
+    descAr:"رقائق عود ماليزي — أخف وأكثر فاكهية ورقة من الهندي. أناقة ورهافة.",
+    tags:["Agarwood","Malaysian","Soft","Fruity"],
+    usage:"burn", family:"oud_incense", intensity:2, occasions:["home"], tier:"mid"
+  },
+  W3:{
+    n:"Kalimantan Agarwood", nAr:"عود كاليمانتان",
+    category:"Agarwood Chips", sale:"416.50", was:"595.00",
+    url:"https://www.oudfactory.com/collections/woods-incense/products/kalimantan-agarwood-copy",
+    desc:"Kalimantan (Borneo) agarwood — wild, earthy, with a deeply resinous smoke. For the true connoisseur.",
+    descAr:"عود كاليمانتان (بورنيو) — بري، ترابي، بدخان راتنجي عميق. للمذاق الرفيع الحقيقي.",
+    tags:["Agarwood","Borneo","Wild","Resinous"],
+    usage:"burn", family:"oud_incense", intensity:3, occasions:["home","events"], tier:"mid"
   },
 
   /* GIFT SETS */
   G1:{
-    n:"3 Oud Oil Set",
-    category:"Gift Set",
-    sale:"332.61", was:"475.15",
+    n:"3 Oud Oil Set", nAr:"طقم 3 زيوت عود",
+    category:"Gift Set", sale:"1221.50", was:"1745.00",
     url:"https://www.oudfactory.com/collections/gift-sets/products/3-oud-oil-set",
-    desc:"Three carefully selected oud oils — a curated journey through the collection's finest. The ideal gift for those who appreciate the art of pure oud.",
-    tags:["Gift Set","3 Oils","Curated","Luxury","Unisex"],
-    usage:"wear", family:"oud_pure", intensity:3,
-    occasions:["events","gift"], gender:"unisex", tier:"high"
+    desc:"Three carefully selected oud oils — a curated journey through the collection's finest.",
+    descAr:"ثلاثة زيوت عود مختارة بعناية — رحلة منسقة عبر أجود ما في المجموعة.",
+    tags:["Gift Set","3 Oils","Luxury"],
+    usage:"wear", family:"oud_pure", intensity:3, occasions:["events","gift"], tier:"luxury"
   },
   G2:{
-    n:"2 Oud Oil Box",
-    category:"Gift Set",
-    sale:"188.70", was:"269.57",
+    n:"2 Oud Oil Box", nAr:"صندوق زيتي عود",
+    category:"Gift Set", sale:"693.00", was:"990.00",
     url:"https://www.oudfactory.com/collections/gift-sets/products/2-oud-oil-box",
-    desc:"Two premium oud oils in an elegant presentation box — an accessible entry into the world of Oud Factory gifting.",
-    tags:["Gift Set","2 Oils","Elegant","Unisex"],
-    usage:"wear", family:"oud_pure", intensity:2,
-    occasions:["events","gift"], gender:"unisex", tier:"mid"
+    desc:"Two premium oud oils in an elegant presentation box — an accessible entry into Oud Factory gifting.",
+    descAr:"زيتا عود فاخران في علبة تقديم أنيقة — مدخل متاح لعالم هدايا عود فاكتوري.",
+    tags:["Gift Set","2 Oils","Elegant"],
+    usage:"wear", family:"oud_pure", intensity:2, occasions:["events","gift"], tier:"high"
   }
 };
 
-/* ===== QUESTIONS ===== */
+/* ===== QUESTIONS (bilingual) ===== */
 const QUESTIONS = [
-  {id:"q1", text:"What are you looking for today?", opts:[
-    {id:"personal", label:"A personal fragrance for myself"},
-    {id:"home",     label:"A home & majlis atmosphere"},
-    {id:"gift",     label:"A gift for someone special"}
-  ]},
-  {id:"q2", text:"When will you wear it most?", opts:[
-    {id:"daily",   label:"Everyday — work, errands, casual"},
-    {id:"events",  label:"Special occasions & evenings"},
-    {id:"both",    label:"Both — I want something versatile"}
-  ]},
-  {id:"q3", text:"How would you describe your ideal scent presence?", opts:[
-    {id:"strong",   label:"Bold & commanding — I want to be noticed"},
-    {id:"moderate", label:"Balanced — present but not overwhelming"},
-    {id:"quiet",    label:"Subtle — a personal signature discovered up close"}
-  ]},
-  {id:"q4", text:"Which scent character speaks to you?", opts:[
-    {id:"warm",   label:"Deep & warm — oud, spice, resinous"},
-    {id:"smoky",  label:"Bold & dark — tobacco, leather, smoke"},
-    {id:"fresh",  label:"Light & fresh — clean, airy, citrus"},
-    {id:"floral", label:"Floral & elegant — rose, jasmine, petals"},
-    {id:"sweet",  label:"Warm & sweet — vanilla, musk, gourmand"}
-  ]},
-  {id:"q5", text:"What is your relationship with oud?", opts:[
-    {id:"lover",    label:"I love pure, raw oud — the more intense the better"},
-    {id:"oil",      label:"I prefer oud oils — direct skin application, personal and intimate"},
-    {id:"moderate", label:"I enjoy oud as part of a modern composition"},
-    {id:"musk",     label:"I'm drawn to deep, natural musk — raw and magnetic"},
-    {id:"light",    label:"I prefer lighter or Western-style fragrances"}
-  ]},
-  {id:"q6", text:"What is your budget?", opts:[
-    {id:"eco",  label:"Under $120"},
-    {id:"mid",  label:"$120 – $250"},
-    {id:"high", label:"$250 and above"}
-  ]}
+  {id:"q1",
+    text:   "What are you looking for?",
+    textAr: "ماذا تبحث عن؟",
+    opts:[
+      {id:"personal", label:"A personal fragrance for myself",  labelAr:"عطر شخصي لنفسي"},
+      {id:"home",     label:"A home & majlis atmosphere",        labelAr:"أجواء بيت ومجلس"},
+      {id:"gift",     label:"A gift for someone special",        labelAr:"هدية لشخص عزيز"}
+    ]
+  },
+  {id:"q2",
+    text:   "When will you wear/use it most?",
+    textAr: "متى ستستخدمه أكثر؟",
+    opts:[
+      {id:"daily",  label:"Everyday — work, errands, casual",    labelAr:"يومي — عمل ومناسبات عادية"},
+      {id:"events", label:"Special occasions & evenings",         labelAr:"مناسبات خاصة وسهرات"},
+      {id:"both",   label:"Both — I want versatile",             labelAr:"الاثنان — أريد شيئاً متعدد الاستخدام"}
+    ]
+  },
+  {id:"q3",
+    text:   "Your ideal scent presence?",
+    textAr: "حضورك العطري المثالي؟",
+    opts:[
+      {id:"strong",   label:"Bold & commanding",                  labelAr:"جريء وآمر"},
+      {id:"moderate", label:"Balanced — present but not overwhelming", labelAr:"متوازن — حاضر لكن غير طاغٍ"},
+      {id:"quiet",    label:"Subtle — a personal signature",      labelAr:"خفي — توقيع شخصي"}
+    ]
+  },
+  {id:"q4",
+    text:   "Which scent character?",
+    textAr: "أي شخصية عطرية؟",
+    opts:[
+      {id:"warm",   label:"Deep & warm — oud, spice, resinous",  labelAr:"عميق ودافئ — عود، توابل، راتنج"},
+      {id:"smoky",  label:"Bold & dark — tobacco, leather, smoke",labelAr:"جريء وداكن — تبغ، جلد، دخان"},
+      {id:"fresh",  label:"Light & fresh — clean, airy, citrus", labelAr:"خفيف ومنعش — نظيف، هوائي، حمضيات"},
+      {id:"floral", label:"Floral & elegant — rose, jasmine",    labelAr:"زهري وأنيق — ورد، ياسمين"},
+      {id:"sweet",  label:"Warm & sweet — vanilla, musk, gourmand", labelAr:"دافئ وحلو — فانيليا، مسك، غورمان"}
+    ]
+  },
+  {id:"q5",
+    text:   "Your relationship with oud?",
+    textAr: "علاقتك بالعود؟",
+    opts:[
+      {id:"lover",    label:"I love pure, raw oud",               labelAr:"أعشق العود الخالص النيّئ"},
+      {id:"oil",      label:"I prefer oud oils — direct skin application", labelAr:"أفضل زيوت العود — تطبيق مباشر على الجلد"},
+      {id:"moderate", label:"I enjoy oud as part of a modern composition", labelAr:"أستمتع بالعود ضمن تركيبة عصرية"},
+      {id:"musk",     label:"I'm drawn to deep, natural musk",    labelAr:"أنجذب للمسك الطبيعي العميق"},
+      {id:"light",    label:"I prefer lighter or Western-style",  labelAr:"أفضل العطور الخفيفة أو الغربية الطراز"}
+    ]
+  },
+  {id:"q6",
+    text:   "Your budget?",
+    textAr: "ميزانيتك؟",
+    opts:[
+      {id:"eco",  label:"Under $450",          labelAr:"أقل من $450"},
+      {id:"mid",  label:"$450 – $750",          labelAr:"من $450 إلى $750"},
+      {id:"high", label:"$750 and above",       labelAr:"$750 وما فوق"}
+    ]
+  }
 ];
 
 /* ===== SCORING ===== */
-function scoreProduct(pid, a) {
+function scoreProduct(pid, a){
   const p = P[pid];
   let s = 0;
 
-  /* q1 — usage type (35pts) */
-  if (a.q1 === "home") {
+  /* q1 — usage type */
+  if(a.q1 === "home"){
     s += p.usage === "burn" ? 35 : 0;
-  } else if (a.q1 === "gift") {
+  } else if(a.q1 === "gift"){
     s += (p.category === "Gift Set") ? 40 : (p.usage === "wear" ? 25 : 5);
   } else {
     s += p.usage === "wear" ? 35 : 0;
   }
 
-  /* q4 — scent family (30pts) */
+  /* q4 — scent family (30pts max) */
   const fm = {
-    warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4},
-    smoky: {tobacco_smoky:30,oud_leather:28,musk_animalic:24,oud_pure:18,oud_incense:16,oud_sweet:12,oud_sweet_woody:10,floral_rose_oud:6,musky_floral:4,fresh_musky:2,floral_rose:2},
-    fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10},
-    floral:{floral_rose:30,floral_rose_oud:28,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8},
-    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:26,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14}
+    warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4,oud_smoky_oriental:20},
+    smoky: {tobacco_smoky:30,oud_leather:28,musk_animalic:24,oud_pure:18,oud_incense:16,oud_sweet:12,oud_sweet_woody:10,floral_rose_oud:6,musky_floral:4,fresh_musky:2,floral_rose:2,oud_smoky_oriental:28},
+    fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10,oud_smoky_oriental:2},
+    floral:{floral_rose:30,floral_rose_oud:28,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8,oud_smoky_oriental:4},
+    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:26,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14,oud_smoky_oriental:10}
   };
   s += ((fm[a.q4]||{})[p.family]||0);
 
@@ -471,17 +777,18 @@ function scoreProduct(pid, a) {
   s += diff===0?15:diff===1?8:2;
 
   /* q2 — occasion (12pts) */
-  const om = {daily:["daily","home"],events:["events","evening","gift"],both:["daily","events","home","gift"]};
+  const om = {daily:["daily","home"],events:["events","evening","gift"],both:["daily","events","home","gift","evening"]};
   s += (om[a.q2]||[]).some(o=>p.occasions.includes(o))?12:0;
 
-  /* q6 — budget (8pts) */
+  /* q6 — budget (8pts) — eco<$450, mid $450-$750, high>$750, luxury treated as high */
+  const effectiveTier = p.tier === "luxury" ? "high" : p.tier;
   const bm = {eco:{eco:8,mid:4,high:0},mid:{eco:4,mid:8,high:2},high:{eco:2,mid:4,high:8}};
-  s += ((bm[a.q6]||{})[p.tier]||4);
+  s += ((bm[a.q6]||{})[effectiveTier]||4);
 
   /* q5 — oud affinity (bonus) */
-  if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather")) s+=5;
+  if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather"||p.family==="oud_smoky_oriental")) s+=5;
   if(a.q5==="light" && (p.family==="fresh_musky"||p.family==="floral_rose")) s+=5;
-  if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="musky_floral"||p.family==="oud_sweet_woody")) s+=5;
+  if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="musky_floral"||p.family==="oud_sweet_woody"||p.family==="oud_smoky_oriental")) s+=5;
   if(a.q5==="oil" && p.category==="Oud Oil") s+=8;
   if(a.q5==="musk" && p.family==="musk_animalic") s+=10;
 
@@ -493,174 +800,186 @@ function rankProducts(a){
 }
 
 function matchReason(pid, a){
-  const p=P[pid];const r=[];
-  if(a.q1==="home"&&p.usage==="burn") r.push("For home & majlis atmosphere");
-  if(a.q1==="gift"&&p.category==="Gift Set") r.push("A curated gifting option");
-  if(a.q1!=="home"&&p.usage==="wear"&&a.q1!=="gift") r.push("A wearable personal fragrance");
-  const fl={oud_pure:"Pure oud character",oud_leather:"Oud & leather depth",tobacco_smoky:"Smoky tobacco signature",oud_sweet:"Sweet oud warmth",musky_floral:"Musky floral blend",fresh_musky:"Fresh & clean",floral_rose:"Floral rose heart",musk_animalic:"Powerful natural musk",oud_sweet_woody:"Sweet woody oud",floral_rose_oud:"Dark rose & oud",oud_incense:"Incense & agarwood"};
+  const p = P[pid];
+  const l = L();
+  const r = [];
+  if(a.q1==="home" && p.usage==="burn") r.push(l.matchReason_home);
+  if(a.q1==="gift" && p.category==="Gift Set") r.push(l.matchReason_gift);
+  if(a.q1!=="home" && p.usage==="wear" && a.q1!=="gift") r.push(l.matchReason_wear);
+  const fl = l.families;
   if(fl[p.family]) r.push(fl[p.family]);
-  const il={1:"Subtle sillage",2:"Balanced presence",3:"Strong projection"};
+  const il = l.intensities;
   if(il[p.intensity]) r.push(il[p.intensity]);
   return r.slice(0,2).join(" · ");
 }
 
 /* ===== ENGINE ===== */
-const state={i:0,answers:{},ranked:[]};
-const screen=document.getElementById("screen");
-const bar=document.getElementById("bar");
-function setBar(s){bar.style.width=Math.round((s/QUESTIONS.length)*100)+"%"}
+const state = {i:0, answers:{}, ranked:[], phase:'hero'};
+const screen = document.getElementById("screen");
+const bar = document.getElementById("bar");
+
+function setBar(s){ bar.style.width = Math.round((s/QUESTIONS.length)*100)+"%" }
+
+function pName(p){ return currentLang==='ar' ? p.nAr : p.n; }
+function pDesc(p){ return currentLang==='ar' ? p.descAr : p.desc; }
 
 function renderHero(){
+  state.phase = 'hero';
   setBar(0);
+  const l = L();
   screen.innerHTML=`
-    <span class="hero-eyebrow">Fragrance Advisor</span>
-    <h1>Find Your Perfect Oud Factory Scent</h1>
-    <p class="sub">Answer six questions and we'll guide you through our collection — from rare pure ouds to modern European compositions.</p>
+    <span class="hero-eyebrow">${l.heroEyebrow}</span>
+    <h1>${l.heroTitle}</h1>
+    <p class="sub">${l.heroSub}</p>
     <div class="divider"></div>
-    <button class="btn btn-primary" id="start">Begin the Journey</button>`;
-  document.getElementById("start").onclick=()=>{state.i=0;renderQuestion()};
+    <button class="btn btn-primary" id="start">${l.startBtn}</button>`;
+  document.getElementById("start").onclick=()=>{state.i=0;state.answers={};renderQuestion()};
 }
 
 function renderQuestion(){
-  const q=QUESTIONS[state.i];
+  state.phase = 'question';
+  const q = QUESTIONS[state.i];
+  const l = L();
   setBar(state.i+1);
+  const qText = currentLang==='ar' ? q.textAr : q.text;
   screen.innerHTML=`
-    <div class="q-step">Question ${state.i+1} of ${QUESTIONS.length}</div>
-    <div class="q-text">${q.text}</div>
+    <div class="q-step">${l.questionLabel} ${state.i+1} ${l.of} ${QUESTIONS.length}</div>
+    <div class="q-text">${qText}</div>
     <div class="opts" id="opts"></div>
-    ${state.i>0?'<div class="back-row"><button class="btn btn-ghost" id="back" style="width:auto;padding:11px 32px">Back</button></div>':''}`;
-  const wrap=document.getElementById("opts");
+    ${state.i>0?`<div class="back-row"><button class="btn btn-ghost" id="back" style="width:auto;padding:11px 32px">${l.backBtn}</button></div>`:''}`;
+  const wrap = document.getElementById("opts");
   q.opts.forEach(o=>{
-    const b=document.createElement("button");
-    b.className="opt";
-    b.innerHTML=`<span class="dot"></span><span>${o.label}</span>`;
-    b.onclick=()=>{
-      state.answers[q.id]=o.id;
-      if(state.i<QUESTIONS.length-1){state.i++;renderQuestion();}
-      else{state.ranked=rankProducts(state.answers);renderResult();}
+    const b = document.createElement("button");
+    b.className = "opt";
+    const optLabel = currentLang==='ar' ? o.labelAr : o.label;
+    b.innerHTML = `<span class="dot"></span><span>${optLabel}</span>`;
+    b.onclick = ()=>{
+      state.answers[q.id] = o.id;
+      if(state.i < QUESTIONS.length-1){ state.i++; renderQuestion(); }
+      else{ state.ranked = rankProducts(state.answers); renderResult(); }
     };
     wrap.appendChild(b);
   });
-  const back=document.getElementById("back");
-  if(back)back.onclick=()=>{state.i--;renderQuestion()};
+  const back = document.getElementById("back");
+  if(back) back.onclick = ()=>{ state.i--; renderQuestion(); };
 }
 
 function renderResult(){
+  state.phase = 'result';
   setBar(QUESTIONS.length);
-  const ranked=state.ranked;
-  const topId=ranked[0].id;
-  const top=P[topId];
-  const topPrice=top.was?`<span class="price-sale">$${top.sale}</span><span class="price-original">$${top.was}</span>`:`<span class="price-only">$${top.sale}</span>`;
+  const l = L();
+  const ranked = state.ranked;
+  const topId = ranked[0].id;
+  const top = P[topId];
+  const topSale = parseFloat(top.sale);
+  const topWas = top.was ? parseFloat(top.was) : null;
+  const topPriceHtml = topWas
+    ? `<span class="price-sale">AED ${top.sale}</span><span class="price-original">AED ${top.was}</span><span class="price-sale-badge">${l.saleLabel}</span>`
+    : `<span class="price-only">AED ${top.sale}</span>`;
 
   function altCard(rank){
-    const item=ranked[rank];const pd=P[item.id];
-    const reason=matchReason(item.id,state.answers);
-    const priceStr=pd.was?`$${pd.sale} <span class="was">$${pd.was}</span>`:`$${pd.sale}`;
-    const tagsHtml=pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
-    return`<div class="prod-card" onclick="toggleCard(this)">
+    const item = ranked[rank];
+    if(!item) return '';
+    const pd = P[item.id];
+    const reason = matchReason(item.id, state.answers);
+    const priceStr = pd.was
+      ? `AED ${pd.sale} <span class="was">${l.wasLabel} AED ${pd.was}</span>`
+      : `AED ${pd.sale}`;
+    const tagsHtml = pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+    const name = pName(pd);
+    const desc = pDesc(pd);
+    return `<div class="prod-card" onclick="toggleCard(this)">
       <div class="prod-card-head">
-        <div><div class="prod-card-name">${pd.n}</div><div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div></div>
+        <div>
+          <div class="prod-card-name">${name}</div>
+          <div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div>
+        </div>
         <div class="prod-card-price">${priceStr}</div>
       </div>
       <div class="prod-card-tags">${tagsHtml}</div>
-      ${reason?`<div class="prod-card-match">✦ ${reason}</div>`:""}
-      <div class="expand-hint" style="margin-top:8px">Tap to expand</div>
+      ${reason ? `<div class="prod-card-match">✦ ${reason}</div>` : ""}
+      <div class="expand-hint">${l.tapExpand}</div>
       <div class="prod-card-detail">
-        <div class="prod-card-detail-desc">${pd.desc}</div>
-        <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">View Product</a>
+        <div class="prod-card-detail-desc">${desc}</div>
+        <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">${l.viewProduct}</a>
       </div>
     </div>`;
   }
 
   function remainingCards(){
     return ranked.slice(3).map(item=>{
-      const pd=P[item.id];
-      const priceStr=pd.was?`$${pd.sale} <span class="was">$${pd.was}</span>`:`$${pd.sale}`;
-      const tagsHtml=pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
-      return`<div class="prod-card" onclick="toggleCard(this)">
+      const pd = P[item.id];
+      const priceStr = pd.was
+        ? `AED ${pd.sale} <span class="was">${l.wasLabel} AED ${pd.was}</span>`
+        : `AED ${pd.sale}`;
+      const tagsHtml = pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+      const name = pName(pd);
+      const desc = pDesc(pd);
+      return `<div class="prod-card" onclick="toggleCard(this)">
         <div class="prod-card-head">
-          <div><div class="prod-card-name">${pd.n}</div><div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div></div>
+          <div>
+            <div class="prod-card-name">${name}</div>
+            <div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div>
+          </div>
           <div class="prod-card-price">${priceStr}</div>
         </div>
         <div class="prod-card-tags">${tagsHtml}</div>
-        <div class="expand-hint" style="margin-top:8px">Tap to expand</div>
+        <div class="expand-hint">${l.tapExpand}</div>
         <div class="prod-card-detail">
-          <div class="prod-card-detail-desc">${pd.desc}</div>
-          <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">View Product</a>
+          <div class="prod-card-detail-desc">${desc}</div>
+          <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">${l.viewProduct}</a>
         </div>
       </div>`;
     }).join("");
   }
 
+  const waMsg = encodeURIComponent(
+    currentLang==='ar'
+      ? `مرحباً، أنا مهتم بـ ${pName(top)} من Oud Factory. هل يمكنكم مساعدتي؟`
+      : `Hi, I'm interested in ${top.n} from Oud Factory. Can you help me?`
+  );
+  const waUrl = `https://wa.me/971568788399?text=${waMsg}`;
+
   screen.innerHTML=`
     <div class="result-header">
-      <h2>Your Curated Selection</h2>
-      <p>We've ranked our full collection based on your answers — your best match is first.</p>
+      <h2>${l.resultTitle}</h2>
+      <p>${l.resultSub}</p>
     </div>
     <div class="top-pick">
-      <span class="top-pick-label">Best Match</span>
+      <span class="top-pick-label">${l.topMatchLabel}</span>
       <div class="top-pick-body">
-        <div class="tp-name">${top.n}</div>
+        <div class="tp-name">${pName(top)}</div>
         <div class="tp-category">${top.category}</div>
-        <div class="tp-price-row">${topPrice}</div>
+        <div class="tp-price-row">${topPriceHtml}</div>
         <div class="tp-tags">${top.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-        <div class="tp-because">${top.desc}</div>
+        <div class="tp-because">${pDesc(top)}</div>
         <div class="cta-section">
-          <a class="btn btn-primary" href="${top.url}" target="_blank" rel="noopener">Shop This Fragrance</a>
-          <button class="btn btn-outline" onclick="renderForm()">Save My Recommendation</button>
+          <a class="btn btn-primary" href="${top.url}" target="_blank" rel="noopener">${l.shopBtn}</a>
+          <a class="btn btn-wa" href="${waUrl}" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ${l.whatsappBtn}
+          </a>
         </div>
       </div>
     </div>
-    <div class="section-label">Close Alternatives</div>
+    <div class="section-label">${l.alternativesLabel}</div>
     ${altCard(1)}${altCard(2)}
-    <div class="section-label">Full Collection — Ranked For You</div>
+    <div class="section-label">${l.allLabel}</div>
     ${remainingCards()}
     <div class="divider"></div>
-    <button class="btn btn-ghost" id="restart">Start Over</button>`;
-  document.getElementById("restart").onclick=()=>{state.answers={};state.i=0;renderHero()};
+    <button class="btn btn-ghost" id="restart">${l.retakeBtn}</button>`;
+
+  document.getElementById("restart").onclick=()=>{ state.answers={}; state.i=0; renderHero(); };
 }
 
 function toggleCard(el){
-  const d=el.querySelector(".prod-card-detail");
-  if(d)d.classList.toggle("open");
+  const d = el.querySelector(".prod-card-detail");
+  if(d) d.classList.toggle("open");
 }
 
-function renderForm(){
-  const top=P[state.ranked[0].id];
-  screen.innerHTML=`
-    <div class="form-title">Save Your Recommendation</div>
-    <p class="form-sub">We'll send you details on <em style="color:var(--gold)">${top.n}</em> and any exclusive offers — no spam, ever.</p>
-    <div id="msg" class="msg"></div>
-    <div class="field"><label>Your Name</label><input id="f_name" type="text" autocomplete="name" placeholder="Enter your name"></div>
-    <div class="field"><label>Phone / WhatsApp</label><input id="f_phone" type="tel" autocomplete="tel" placeholder="+971 XX XXX XXXX"></div>
-    <div class="divider"></div>
-    <div class="cta-section">
-      <button class="btn btn-primary" id="submit">Send</button>
-      <button class="btn btn-ghost" id="skip" style="width:auto;margin:0 auto">Skip — take me to the product</button>
-    </div>`;
-  document.getElementById("submit").onclick=submitLead;
-  document.getElementById("skip").onclick=()=>window.open(top.url,"_blank","noopener");
-}
-
-function showMsg(t,x){const m=document.getElementById("msg");m.className="msg "+t;m.textContent=x}
-
-function submitLead(){
-  const name=document.getElementById("f_name").value.trim();
-  const phone=document.getElementById("f_phone").value.trim();
-  if(name.length<2){showMsg("err","Please enter your name.");return}
-  if(!/^[0-9+\s]{6,}$/.test(phone)){showMsg("err","Please enter a valid phone number.");return}
-  if(!LEAD_ENDPOINT){
-    showMsg("ok","Received! (Demo mode — in production this sends to your CRM.)");
-    return;
-  }
-  const btn=document.getElementById("submit");
-  btn.disabled=true;btn.textContent="Sending…";
-  fetch(LEAD_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({name,phone,top:state.ranked[0].id,product:P[state.ranked[0].id].n,answers:state.answers,ts:new Date().toISOString()})})
-  .then(r=>r.json()).then(res=>{if(res&&res.ok){showMsg("ok","Sent successfully.");setTimeout(()=>window.open(P[state.ranked[0].id].url,"_blank","noopener"),800);}else throw 0})
-  .catch(()=>{showMsg("err","Could not send. Please try again.");btn.disabled=false;btn.textContent="Send"});
-}
-
-renderHero();
+/* ===== INIT ===== */
+state.phase = 'hero';
+applyLang(); // applyLang detects phase and calls renderHero()
 </script>
 </body>
 </html>

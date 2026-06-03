@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oud Factory — Fragrance Advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#c8a84b;
+    --gold-dark:#9a7a25;
+    --gold-light:#e2c97e;
+    --bg:#0a0a0a;
+    --card:#141414;
+    --card2:#1c1c1c;
+    --border:#2a2a2a;
+    --white:#f5f0e8;
+    --muted:#888;
+    --muted2:#555;
+    --ok:#4caf82;
+    --err:#c0392b;
+    --ink:#e8e0d0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{max-width:100%;overflow-x:hidden;scroll-behavior:smooth}
+  body{
+    font-family:'Jost',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  /* HEADER */
+  .site-header{
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    padding:0 24px;
+    display:flex;align-items:center;justify-content:center;
+    height:60px;position:sticky;top:0;z-index:100;
+  }
+  .site-header img{height:30px;width:auto;filter:brightness(1.2)}
+
+  /* BREADCRUMB */
+  .breadcrumb{
+    padding:12px 24px;font-size:12px;color:var(--muted);
+    max-width:640px;margin:0 auto;letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .breadcrumb a{color:var(--muted);text-decoration:none}
+  .breadcrumb span{color:var(--gold)}
+
+  /* MAIN */
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px 56px}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .pad{padding:36px 32px}
+  @media(max-width:480px){.pad{padding:28px 20px}}
+
+  /* PROGRESS */
+  .progress{height:2px;background:var(--border)}
+  .progress > i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s ease}
+
+  /* HERO */
+  .hero-eyebrow{
+    font-size:10px;font-weight:600;letter-spacing:3px;
+    color:var(--gold);text-transform:uppercase;
+    margin-bottom:20px;display:block;
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:32px;font-weight:600;line-height:1.25;
+    color:var(--white);margin-bottom:14px;
+  }
+  .sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.8;font-weight:300}
+  .divider{height:1px;background:var(--border);margin:28px 0}
+
+  /* BUTTONS */
+  .btn{
+    appearance:none;border:0;cursor:pointer;
+    font-family:'Jost',inherit;font-weight:500;font-size:13px;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:14px 32px;width:100%;
+    transition:all .2s ease;display:block;text-align:center;text-decoration:none;
+  }
+  .btn-primary{background:var(--gold);color:#0a0a0a}
+  .btn-primary:hover{background:var(--gold-light)}
+  .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+  .btn-outline:hover{background:rgba(200,168,75,.08)}
+  .btn-ghost{
+    background:transparent;color:var(--muted);
+    border:1px solid var(--border);font-size:12px;
+    padding:11px 28px;letter-spacing:1px;
+  }
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* QUESTION */
+  .q-step{font-size:11px;color:var(--muted2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  .q-text{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;font-weight:600;color:var(--white);
+    margin-bottom:28px;line-height:1.35;
+  }
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{
+    background:var(--card2);border:1px solid var(--border);
+    padding:16px 20px;cursor:pointer;
+    font-family:'Jost',inherit;font-size:14px;color:var(--ink);
+    transition:border-color .15s,background .15s;
+    display:flex;align-items:center;gap:14px;
+    text-align:left;
+  }
+  .opt:hover{border-color:var(--gold);background:rgba(200,168,75,.05)}
+  .opt .dot{
+    width:16px;height:16px;border-radius:50%;
+    border:1px solid var(--muted2);flex:0 0 auto;
+    transition:border-color .15s,background .15s;
+  }
+  .opt:hover .dot{border-color:var(--gold)}
+  .back-row{margin-top:14px;text-align:center}
+
+  /* RESULT HEADER */
+  .result-header{margin-bottom:32px}
+  .result-header h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;font-weight:600;color:var(--white);
+    margin-bottom:8px;line-height:1.3;
+  }
+  .result-header p{font-size:13px;color:var(--muted);line-height:1.8}
+
+  /* TOP PICK */
+  .top-pick{
+    background:var(--card2);
+    border:1px solid var(--gold);
+    margin-bottom:16px;overflow:hidden;
+  }
+  .top-pick-label{
+    background:var(--gold);color:#0a0a0a;
+    font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
+    padding:7px 20px;display:block;text-align:center;
+  }
+  .top-pick-body{padding:28px 28px 24px}
+  .tp-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;font-weight:600;color:var(--white);
+    margin-bottom:6px;line-height:1.2;
+  }
+  .tp-category{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+  .tp-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+  .price-sale{font-size:22px;font-weight:600;color:var(--gold)}
+  .price-original{font-size:14px;color:var(--muted2);text-decoration:line-through}
+  .price-only{font-size:22px;font-weight:600;color:var(--gold)}
+  .tp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  .tag{
+    font-size:10px;letter-spacing:1px;text-transform:uppercase;
+    padding:4px 12px;border:1px solid var(--border);
+    color:var(--muted);background:transparent;
+  }
+  .tp-because{
+    font-size:14px;line-height:1.8;color:var(--ink);margin-bottom:24px;
+    border-left:2px solid var(--gold);padding-left:16px;
+    font-weight:300;
+  }
+  .cta-section{display:flex;flex-direction:column;gap:10px}
+
+  /* SECTION LABEL */
+  .section-label{
+    font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--muted2);margin:28px 0 12px;
+    padding-bottom:10px;border-bottom:1px solid var(--border);
+  }
+
+  /* PRODUCT CARD */
+  .prod-card{
+    background:var(--card2);border:1px solid var(--border);
+    padding:18px 20px;margin-bottom:8px;cursor:pointer;
+    transition:border-color .15s;
+  }
+  .prod-card:hover{border-color:var(--gold)}
+  .prod-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .prod-card-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;font-weight:600;color:var(--white);line-height:1.3;flex:1;
+  }
+  .prod-card-price{font-size:14px;font-weight:500;color:var(--gold);white-space:nowrap;flex-shrink:0}
+  .prod-card-price .was{font-size:11px;color:var(--muted2);text-decoration:line-through;margin-left:6px}
+  .prod-card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .prod-card-match{font-size:12px;color:var(--ok);margin-top:8px;letter-spacing:.3px}
+  .prod-card-detail{display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+  .prod-card-detail.open{display:block}
+  .prod-card-detail-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px;font-weight:300}
+  .expand-hint{font-size:11px;color:var(--muted2);margin-top:6px;letter-spacing:.5px}
+
+  /* FORM */
+  .form-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;font-weight:600;color:var(--white);margin-bottom:8px;
+  }
+  .form-sub{font-size:13px;color:var(--muted);margin-bottom:26px;line-height:1.8;font-weight:300}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .field input{
+    width:100%;font-family:'Jost',inherit;font-size:14px;
+    padding:12px 16px;border:1px solid var(--border);
+    background:var(--card2);color:var(--ink);
+    transition:border-color .15s;
+  }
+  .field input:focus{outline:none;border-color:var(--gold)}
+  .msg{font-size:13px;padding:10px 14px;margin-bottom:14px;display:none}
+  .msg.err{display:block;background:rgba(192,57,43,.12);color:#e74c3c;border:1px solid rgba(192,57,43,.3)}
+  .msg.ok{display:block;background:rgba(76,175,130,.1);color:var(--ok);border:1px solid rgba(76,175,130,.3)}
+
+  /* FOOTER */
+  .site-footer{
+    background:var(--card);border-top:1px solid var(--border);
+    text-align:center;padding:24px 20px;
+    font-size:11px;color:var(--muted2);margin-top:56px;
+    letter-spacing:.5px;
+  }
+  .site-footer a{color:var(--muted);text-decoration:none}
+  .site-footer a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <img src="https://cdn.shopify.com/s/files/1/0567/0673/4342/files/OudFactory-Logo-Gold.png" 
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+       alt="Oud Factory">
+  <span style="display:none;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);letter-spacing:2px">OUD FACTORY</span>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="https://www.oudfactory.com">Home</a> / <span>Fragrance Advisor</span>
+</div>
+
+<!-- APP -->
+<div class="wrap">
+  <div class="card">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="pad" id="screen"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <a href="https://www.oudfactory.com">Oud Factory</a>
+  &nbsp;·&nbsp; Fragrance Advisor
+  &nbsp;·&nbsp; Built by <a href="https://fulltimedigi.com" target="_blank">FullTimeDigi</a>
+</footer>
+
+<script>
+const LEAD_ENDPOINT = "";
+
+/* ===== PRODUCTS — Top 12 curated from full catalog ===== */
+const P = {
+  /* PERFUMES */
+  P1:{
+    n:"IL Mio Cuore Parfum",
+    category:"Extrait de Parfum",
+    sale:"186.79", was:"266.85",
+    url:"https://www.oudfactory.com/collections/perfumes/products/il-mio-cuore-parfum",
+    desc:"A story of the human spirit — vanilla and florals open to a deeply musky heart. One of the longest-lasting in the collection. Warm, intimate, and universally beloved.",
+    tags:["Musky","Floral","Vanilla","Long-lasting","Unisex"],
+    usage:"wear", family:"musky_floral", intensity:2,
+    occasions:["daily","events"], gender:"unisex", tier:"mid"
+  },
+  P2:{
+    n:"Katana Extrait de Parfum",
+    category:"Extrait de Parfum",
+    sale:"310.69", was:"443.84",
+    url:"https://www.oudfactory.com/collections/perfumes/products/katana-perfume",
+    desc:"Bold, rare wild Borneo oud at the heart — layered with musky, leathery saffron blood notes. A statement scent for those who demand presence.",
+    tags:["Oud","Leathery","Saffron","Powerful","Unisex"],
+    usage:"wear", family:"oud_leather", intensity:3,
+    occasions:["events","evening"], gender:"unisex", tier:"high"
+  },
+  P3:{
+    n:"Tobaco Cubano Parfum",
+    category:"Parfum",
+    sale:"186.79", was:"266.85",
+    url:"https://www.oudfactory.com/collections/perfumes/products/tobaco-cubano-parfum",
+    desc:"Rich tobacco, aged leather, amber, and black pepper — a countryside luxury with an addictive smoky depth. Among the most-requested in the collection.",
+    tags:["Tobacco","Smoky","Leathery","Amber","Unisex"],
+    usage:"wear", family:"tobacco_smoky", intensity:3,
+    occasions:["events","evening"], gender:"unisex", tier:"mid"
+  },
+  P4:{
+    n:"Harukaze Parfum",
+    category:"Parfum",
+    sale:"186.79", was:"266.85",
+    url:"https://www.oudfactory.com/collections/perfumes/products/harukaze-parfum",
+    desc:"Inspired by coastal winds — musk, ambergris, patchouli, and zesty notes create a refreshing, breezy signature ideal for warm days.",
+    tags:["Musky","Fresh","Ambergris","Light","Unisex"],
+    usage:"wear", family:"fresh_musky", intensity:1,
+    occasions:["daily"], gender:"unisex", tier:"mid"
+  },
+  P5:{
+    n:"Coração De Rosas Parfum",
+    category:"Parfum",
+    sale:"186.79", was:"266.85",
+    url:"https://www.oudfactory.com/collections/perfumes/products/coracao-de-rosas-parfum",
+    desc:"The founder's first creation — a passionate bouquet of roses and florals, crafted to recreate the essence of a singular, rare flower.",
+    tags:["Floral","Rose","Feminine","Elegant","Unisex"],
+    usage:"wear", family:"floral_rose", intensity:2,
+    occasions:["daily","events"], gender:"female", tier:"mid"
+  },
+  P6:{
+    n:"Fumo Dolce Extrait de Parfum",
+    category:"Extrait de Parfum",
+    sale:"272.57", was:"389.38",
+    url:"https://www.oudfactory.com/collections/perfumes/products/fumo-dolce-extrait-de-parfum",
+    desc:"Creamy oud meets royal Omani frankincense — enriched with cocoa, vanilla, dark musk, and cedarwood. A winter signature of exceptional depth.",
+    tags:["Oud","Frankincense","Cocoa","Vanilla","Unisex"],
+    usage:"wear", family:"oud_sweet", intensity:3,
+    occasions:["events","evening"], gender:"unisex", tier:"high"
+  },
+
+  /* OUD OILS */
+  O1:{
+    n:"Senshi Oud Oil",
+    category:"Oud Oil",
+    sale:"150.58", was:"215.11",
+    url:"https://www.oudfactory.com/collections/all/products/senshi-oil",
+    desc:"A favourite among connoisseurs — pure oud oils from around the world blended to reveal complexity over time. Intensely fragrant and extraordinarily long-lasting.",
+    tags:["Pure Oud Oil","Complex","Powerful","Long-lasting","Unisex"],
+    usage:"wear", family:"oud_pure", intensity:3,
+    occasions:["daily","events"], gender:"unisex", tier:"high"
+  },
+  O2:{
+    n:"Deer Musk Oil",
+    category:"Oud Oil",
+    sale:"113.41", was:"162.10",
+    url:"https://www.oudfactory.com/collections/all/products/deer-musk-oil",
+    desc:"Pure natural deer musk — warm, animalic, and deeply alluring. A best-seller prized for its exceptional sillage and staying power.",
+    tags:["Pure Musk","Animalic","Warm","Powerful","Unisex"],
+    usage:"wear", family:"musk_animalic", intensity:3,
+    occasions:["daily","events"], gender:"unisex", tier:"mid"
+  },
+  O3:{
+    n:"Rosa Escura Oil",
+    category:"Oud Oil",
+    sale:"94.35", was:"134.79",
+    url:"https://www.oudfactory.com/collections/all/products/rosa-escura-oil",
+    desc:"Dark rose and rich oud notes in perfect harmony — inspired by Coração De Rosas, this oil adds depth and resinous warmth to the floral signature.",
+    tags:["Rose","Oud","Dark Floral","Feminine","Unisex"],
+    usage:"wear", family:"floral_rose_oud", intensity:2,
+    occasions:["daily","events"], gender:"female", tier:"mid"
+  },
+  O4:{
+    n:"Thai Oud Oil",
+    category:"Oud Oil",
+    sale:"80.50", was:"114.36",
+    url:"https://www.oudfactory.com/collections/all/products/thai-oud-oil",
+    desc:"Sweet, incensy, and woody — Thai oud in its classic form. Gentle on the senses yet long-lasting, a perfect introduction to pure oud oils.",
+    tags:["Thai Oud","Sweet","Woody","Incensy","Unisex"],
+    usage:"wear", family:"oud_sweet_woody", intensity:2,
+    occasions:["daily","home"], gender:"unisex", tier:"eco"
+  },
+
+  /* WOODS */
+  W1:{
+    n:"Indian Gold Agarwood",
+    category:"Agarwood Chips",
+    sale:"120.80", was:"172.57",
+    url:"https://www.oudfactory.com/collections/woods-incense/products/hindi-gold",
+    desc:"Premium Indian agarwood chips with a bold, complex oriental character. Burns to release an intensely rich smoke — the foundation of a serious majlis.",
+    tags:["Agarwood Chips","Indian","Oriental","Powerful","Unisex"],
+    usage:"burn", family:"oud_incense", intensity:3,
+    occasions:["home","events"], gender:"unisex", tier:"mid"
+  },
+
+  /* GIFT SETS */
+  G1:{
+    n:"3 Oud Oil Set",
+    category:"Gift Set",
+    sale:"332.61", was:"475.15",
+    url:"https://www.oudfactory.com/collections/gift-sets/products/3-oud-oil-set",
+    desc:"Three carefully selected oud oils — a curated journey through the collection's finest. The ideal gift for those who appreciate the art of pure oud.",
+    tags:["Gift Set","3 Oils","Curated","Luxury","Unisex"],
+    usage:"wear", family:"oud_pure", intensity:3,
+    occasions:["events","gift"], gender:"unisex", tier:"high"
+  },
+  G2:{
+    n:"2 Oud Oil Box",
+    category:"Gift Set",
+    sale:"188.70", was:"269.57",
+    url:"https://www.oudfactory.com/collections/gift-sets/products/2-oud-oil-box",
+    desc:"Two premium oud oils in an elegant presentation box — an accessible entry into the world of Oud Factory gifting.",
+    tags:["Gift Set","2 Oils","Elegant","Unisex"],
+    usage:"wear", family:"oud_pure", intensity:2,
+    occasions:["events","gift"], gender:"unisex", tier:"mid"
+  }
+};
+
+/* ===== QUESTIONS ===== */
+const QUESTIONS = [
+  {id:"q1", text:"What are you looking for today?", opts:[
+    {id:"personal", label:"A personal fragrance for myself"},
+    {id:"home",     label:"A home & majlis atmosphere"},
+    {id:"gift",     label:"A gift for someone special"}
+  ]},
+  {id:"q2", text:"When will you wear it most?", opts:[
+    {id:"daily",   label:"Everyday — work, errands, casual"},
+    {id:"events",  label:"Special occasions & evenings"},
+    {id:"both",    label:"Both — I want something versatile"}
+  ]},
+  {id:"q3", text:"How would you describe your ideal scent presence?", opts:[
+    {id:"strong",   label:"Bold & commanding — I want to be noticed"},
+    {id:"moderate", label:"Balanced — present but not overwhelming"},
+    {id:"quiet",    label:"Subtle — a personal signature discovered up close"}
+  ]},
+  {id:"q4", text:"Which scent character speaks to you?", opts:[
+    {id:"warm",   label:"Deep & warm — oud, smoke, spice, leather"},
+    {id:"fresh",  label:"Light & fresh — clean, airy, citrus"},
+    {id:"floral", label:"Floral & elegant — rose, jasmine, petals"},
+    {id:"sweet",  label:"Warm & sweet — vanilla, musk, gourmand"}
+  ]},
+  {id:"q5", text:"What is your relationship with oud?", opts:[
+    {id:"lover",    label:"I love pure, raw oud — the more intense the better"},
+    {id:"moderate", label:"I enjoy oud as part of a modern composition"},
+    {id:"light",    label:"I prefer lighter or Western-style fragrances"}
+  ]},
+  {id:"q6", text:"What is your budget?", opts:[
+    {id:"eco",  label:"Under $120"},
+    {id:"mid",  label:"$120 – $250"},
+    {id:"high", label:"$250 and above"}
+  ]}
+];
+
+/* ===== SCORING ===== */
+function scoreProduct(pid, a) {
+  const p = P[pid];
+  let s = 0;
+
+  /* q1 — usage type (35pts) */
+  if (a.q1 === "home") {
+    s += p.usage === "burn" ? 35 : 0;
+  } else if (a.q1 === "gift") {
+    s += (p.category === "Gift Set") ? 40 : (p.usage === "wear" ? 25 : 5);
+  } else {
+    s += p.usage === "wear" ? 35 : 0;
+  }
+
+  /* q4 — scent family (30pts) */
+  const fm = {
+    warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4},
+    fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10},
+    floral:{floral_rose:30,floral_rose_oud:26,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8},
+    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:22,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14}
+  };
+  s += ((fm[a.q4]||{})[p.family]||0);
+
+  /* q3 — intensity (15pts) */
+  const im = {strong:3,moderate:2,quiet:1};
+  const diff = Math.abs(p.intensity-(im[a.q3]||2));
+  s += diff===0?15:diff===1?8:2;
+
+  /* q2 — occasion (12pts) */
+  const om = {daily:["daily","home"],events:["events","evening","gift"],both:["daily","events","home","gift"]};
+  s += (om[a.q2]||[]).some(o=>p.occasions.includes(o))?12:0;
+
+  /* q6 — budget (8pts) */
+  const bm = {eco:{eco:8,mid:4,high:0},mid:{eco:4,mid:8,high:2},high:{eco:2,mid:4,high:8}};
+  s += ((bm[a.q6]||{})[p.tier]||4);
+
+  /* q5 — oud affinity (bonus) */
+  if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather")) s+=5;
+  if(a.q5==="light" && (p.family==="fresh_musky"||p.family==="floral_rose")) s+=5;
+  if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="musky_floral"||p.family==="oud_sweet_woody")) s+=5;
+
+  return s;
+}
+
+function rankProducts(a){
+  return Object.keys(P).map(id=>({id,score:scoreProduct(id,a)})).sort((a,b)=>b.score-a.score);
+}
+
+function matchReason(pid, a){
+  const p=P[pid];const r=[];
+  if(a.q1==="home"&&p.usage==="burn") r.push("For home & majlis atmosphere");
+  if(a.q1==="gift"&&p.category==="Gift Set") r.push("A curated gifting option");
+  if(a.q1!=="home"&&p.usage==="wear"&&a.q1!=="gift") r.push("A wearable personal fragrance");
+  const fl={oud_pure:"Pure oud character",oud_leather:"Oud & leather depth",tobacco_smoky:"Smoky tobacco signature",oud_sweet:"Sweet oud warmth",musky_floral:"Musky floral blend",fresh_musky:"Fresh & clean",floral_rose:"Floral rose heart",musk_animalic:"Powerful natural musk",oud_sweet_woody:"Sweet woody oud",floral_rose_oud:"Dark rose & oud",oud_incense:"Incense & agarwood"};
+  if(fl[p.family]) r.push(fl[p.family]);
+  const il={1:"Subtle sillage",2:"Balanced presence",3:"Strong projection"};
+  if(il[p.intensity]) r.push(il[p.intensity]);
+  return r.slice(0,2).join(" · ");
+}
+
+/* ===== ENGINE ===== */
+const state={i:0,answers:{},ranked:[]};
+const screen=document.getElementById("screen");
+const bar=document.getElementById("bar");
+function setBar(s){bar.style.width=Math.round((s/QUESTIONS.length)*100)+"%"}
+
+function renderHero(){
+  setBar(0);
+  screen.innerHTML=`
+    <span class="hero-eyebrow">Fragrance Advisor</span>
+    <h1>Find Your Perfect Oud Factory Scent</h1>
+    <p class="sub">Answer six questions and we'll guide you through our collection — from rare pure ouds to modern European compositions.</p>
+    <div class="divider"></div>
+    <button class="btn btn-primary" id="start">Begin the Journey</button>`;
+  document.getElementById("start").onclick=()=>{state.i=0;renderQuestion()};
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[state.i];
+  setBar(state.i+1);
+  screen.innerHTML=`
+    <div class="q-step">Question ${state.i+1} of ${QUESTIONS.length}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="opts" id="opts"></div>
+    ${state.i>0?'<div class="back-row"><button class="btn btn-ghost" id="back" style="width:auto;padding:11px 32px">Back</button></div>':''}`;
+  const wrap=document.getElementById("opts");
+  q.opts.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML=`<span class="dot"></span><span>${o.label}</span>`;
+    b.onclick=()=>{
+      state.answers[q.id]=o.id;
+      if(state.i<QUESTIONS.length-1){state.i++;renderQuestion();}
+      else{state.ranked=rankProducts(state.answers);renderResult();}
+    };
+    wrap.appendChild(b);
+  });
+  const back=document.getElementById("back");
+  if(back)back.onclick=()=>{state.i--;renderQuestion()};
+}
+
+function renderResult(){
+  setBar(QUESTIONS.length);
+  const ranked=state.ranked;
+  const topId=ranked[0].id;
+  const top=P[topId];
+  const topPrice=top.was?`<span class="price-sale">$${top.sale}</span><span class="price-original">$${top.was}</span>`:`<span class="price-only">$${top.sale}</span>`;
+
+  function altCard(rank){
+    const item=ranked[rank];const pd=P[item.id];
+    const reason=matchReason(item.id,state.answers);
+    const priceStr=pd.was?`$${pd.sale} <span class="was">$${pd.was}</span>`:`$${pd.sale}`;
+    const tagsHtml=pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+    return`<div class="prod-card" onclick="toggleCard(this)">
+      <div class="prod-card-head">
+        <div><div class="prod-card-name">${pd.n}</div><div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div></div>
+        <div class="prod-card-price">${priceStr}</div>
+      </div>
+      <div class="prod-card-tags">${tagsHtml}</div>
+      ${reason?`<div class="prod-card-match">✦ ${reason}</div>`:""}
+      <div class="expand-hint" style="margin-top:8px">Tap to expand</div>
+      <div class="prod-card-detail">
+        <div class="prod-card-detail-desc">${pd.desc}</div>
+        <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">View Product</a>
+      </div>
+    </div>`;
+  }
+
+  function remainingCards(){
+    return ranked.slice(3).map(item=>{
+      const pd=P[item.id];
+      const priceStr=pd.was?`$${pd.sale} <span class="was">$${pd.was}</span>`:`$${pd.sale}`;
+      const tagsHtml=pd.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+      return`<div class="prod-card" onclick="toggleCard(this)">
+        <div class="prod-card-head">
+          <div><div class="prod-card-name">${pd.n}</div><div style="font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">${pd.category}</div></div>
+          <div class="prod-card-price">${priceStr}</div>
+        </div>
+        <div class="prod-card-tags">${tagsHtml}</div>
+        <div class="expand-hint" style="margin-top:8px">Tap to expand</div>
+        <div class="prod-card-detail">
+          <div class="prod-card-detail-desc">${pd.desc}</div>
+          <a class="btn btn-outline" href="${pd.url}" target="_blank" rel="noopener" style="font-size:11px;padding:11px 24px">View Product</a>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  screen.innerHTML=`
+    <div class="result-header">
+      <h2>Your Curated Selection</h2>
+      <p>We've ranked our full collection based on your answers — your best match is first.</p>
+    </div>
+    <div class="top-pick">
+      <span class="top-pick-label">Best Match</span>
+      <div class="top-pick-body">
+        <div class="tp-name">${top.n}</div>
+        <div class="tp-category">${top.category}</div>
+        <div class="tp-price-row">${topPrice}</div>
+        <div class="tp-tags">${top.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="tp-because">${top.desc}</div>
+        <div class="cta-section">
+          <a class="btn btn-primary" href="${top.url}" target="_blank" rel="noopener">Shop This Fragrance</a>
+          <button class="btn btn-outline" onclick="renderForm()">Save My Recommendation</button>
+        </div>
+      </div>
+    </div>
+    <div class="section-label">Close Alternatives</div>
+    ${altCard(1)}${altCard(2)}
+    <div class="section-label">Full Collection — Ranked For You</div>
+    ${remainingCards()}
+    <div class="divider"></div>
+    <button class="btn btn-ghost" id="restart">Start Over</button>`;
+  document.getElementById("restart").onclick=()=>{state.answers={};state.i=0;renderHero()};
+}
+
+function toggleCard(el){
+  const d=el.querySelector(".prod-card-detail");
+  if(d)d.classList.toggle("open");
+}
+
+function renderForm(){
+  const top=P[state.ranked[0].id];
+  screen.innerHTML=`
+    <div class="form-title">Save Your Recommendation</div>
+    <p class="form-sub">We'll send you details on <em style="color:var(--gold)">${top.n}</em> and any exclusive offers — no spam, ever.</p>
+    <div id="msg" class="msg"></div>
+    <div class="field"><label>Your Name</label><input id="f_name" type="text" autocomplete="name" placeholder="Enter your name"></div>
+    <div class="field"><label>Phone / WhatsApp</label><input id="f_phone" type="tel" autocomplete="tel" placeholder="+971 XX XXX XXXX"></div>
+    <div class="divider"></div>
+    <div class="cta-section">
+      <button class="btn btn-primary" id="submit">Send</button>
+      <button class="btn btn-ghost" id="skip" style="width:auto;margin:0 auto">Skip — take me to the product</button>
+    </div>`;
+  document.getElementById("submit").onclick=submitLead;
+  document.getElementById("skip").onclick=()=>window.open(top.url,"_blank","noopener");
+}
+
+function showMsg(t,x){const m=document.getElementById("msg");m.className="msg "+t;m.textContent=x}
+
+function submitLead(){
+  const name=document.getElementById("f_name").value.trim();
+  const phone=document.getElementById("f_phone").value.trim();
+  if(name.length<2){showMsg("err","Please enter your name.");return}
+  if(!/^[0-9+\s]{6,}$/.test(phone)){showMsg("err","Please enter a valid phone number.");return}
+  if(!LEAD_ENDPOINT){
+    showMsg("ok","Received! (Demo mode — in production this sends to your CRM.)");
+    return;
+  }
+  const btn=document.getElementById("submit");
+  btn.disabled=true;btn.textContent="Sending…";
+  fetch(LEAD_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({name,phone,top:state.ranked[0].id,product:P[state.ranked[0].id].n,answers:state.answers,ts:new Date().toISOString()})})
+  .then(r=>r.json()).then(res=>{if(res&&res.ok){showMsg("ok","Sent successfully.");setTimeout(()=>window.open(P[state.ranked[0].id].url,"_blank","noopener"),800);}else throw 0})
+  .catch(()=>{showMsg("err","Could not send. Please try again.");btn.disabled=false;btn.textContent="Send"});
+}
+
+renderHero();
+</script>
+</body>
+</html>

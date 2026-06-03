@@ -337,6 +337,26 @@
 </footer>
 
 <script>
+/* ===== LEAD COLLECTION — paste your Google Apps Script Web App URL below ===== */
+const LEAD_ENDPOINT = ""; // e.g. "https://script.google.com/macros/s/YOUR_ID/exec"
+
+function sendLead(topProduct, topScore) {
+  if (!LEAD_ENDPOINT) return;
+  try {
+    fetch(LEAD_ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain"},
+      body: JSON.stringify({
+        top: topProduct.n,
+        score: topScore,
+        answers: state.answers,
+        lang: currentLang,
+        ts: new Date().toISOString()
+      })
+    }).catch(()=>{});
+  } catch(e) {}
+}
+
 /* ===== LANGUAGE STRINGS ===== */
 const LANG = {
   en: {
@@ -871,6 +891,7 @@ function renderResult(){
   const ranked = state.ranked;
   const topId = ranked[0].id;
   const top = P[topId];
+  sendLead(top, ranked[0].score);
   const topSale = parseFloat(top.sale);
   const topWas = top.was ? parseFloat(top.was) : null;
   const topPriceHtml = topWas

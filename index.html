@@ -421,14 +421,17 @@ const QUESTIONS = [
     {id:"quiet",    label:"Subtle — a personal signature discovered up close"}
   ]},
   {id:"q4", text:"Which scent character speaks to you?", opts:[
-    {id:"warm",   label:"Deep & warm — oud, smoke, spice, leather"},
+    {id:"warm",   label:"Deep & warm — oud, spice, resinous"},
+    {id:"smoky",  label:"Bold & dark — tobacco, leather, smoke"},
     {id:"fresh",  label:"Light & fresh — clean, airy, citrus"},
     {id:"floral", label:"Floral & elegant — rose, jasmine, petals"},
     {id:"sweet",  label:"Warm & sweet — vanilla, musk, gourmand"}
   ]},
   {id:"q5", text:"What is your relationship with oud?", opts:[
     {id:"lover",    label:"I love pure, raw oud — the more intense the better"},
+    {id:"oil",      label:"I prefer oud oils — direct skin application, personal and intimate"},
     {id:"moderate", label:"I enjoy oud as part of a modern composition"},
+    {id:"musk",     label:"I'm drawn to deep, natural musk — raw and magnetic"},
     {id:"light",    label:"I prefer lighter or Western-style fragrances"}
   ]},
   {id:"q6", text:"What is your budget?", opts:[
@@ -455,9 +458,10 @@ function scoreProduct(pid, a) {
   /* q4 — scent family (30pts) */
   const fm = {
     warm:  {oud_pure:30,oud_leather:28,tobacco_smoky:26,oud_sweet:22,musk_animalic:20,oud_incense:20,oud_sweet_woody:16,floral_rose_oud:12,musky_floral:8,fresh_musky:4,floral_rose:4},
+    smoky: {tobacco_smoky:30,oud_leather:28,musk_animalic:24,oud_pure:18,oud_incense:16,oud_sweet:12,oud_sweet_woody:10,floral_rose_oud:6,musky_floral:4,fresh_musky:2,floral_rose:2},
     fresh: {fresh_musky:30,musky_floral:18,floral_rose:14,oud_sweet_woody:10,oud_pure:6,oud_sweet:4,oud_leather:2,tobacco_smoky:2,musk_animalic:6,oud_incense:4,floral_rose_oud:10},
-    floral:{floral_rose:30,floral_rose_oud:26,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8},
-    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:22,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14}
+    floral:{floral_rose:30,floral_rose_oud:28,musky_floral:22,fresh_musky:14,oud_sweet:12,oud_pure:6,oud_leather:4,tobacco_smoky:2,musk_animalic:4,oud_incense:4,oud_sweet_woody:8},
+    sweet: {oud_sweet:30,musky_floral:26,floral_rose:18,oud_sweet_woody:26,fresh_musky:12,musk_animalic:16,oud_pure:10,oud_leather:6,tobacco_smoky:8,oud_incense:6,floral_rose_oud:14}
   };
   s += ((fm[a.q4]||{})[p.family]||0);
 
@@ -478,6 +482,8 @@ function scoreProduct(pid, a) {
   if(a.q5==="lover" && (p.family==="oud_pure"||p.family==="oud_leather")) s+=5;
   if(a.q5==="light" && (p.family==="fresh_musky"||p.family==="floral_rose")) s+=5;
   if(a.q5==="moderate" && (p.family==="oud_sweet"||p.family==="musky_floral"||p.family==="oud_sweet_woody")) s+=5;
+  if(a.q5==="oil" && p.category==="Oud Oil") s+=8;
+  if(a.q5==="musk" && p.family==="musk_animalic") s+=10;
 
   return s;
 }

@@ -362,7 +362,7 @@ const LANG = {
   en: {
     heroEyebrow: "Fragrance Advisor",
     heroTitle: "Find Your Perfect Oud Factory Scent",
-    heroSub: "Answer six questions and we'll guide you through our collection — from rare pure ouds to modern European compositions.",
+    heroSub: "Answer a few questions and we'll guide you through our collection — from rare pure ouds to modern European compositions.",
     startBtn: "Begin the Journey",
     questionLabel: "Question",
     of: "of",
@@ -732,6 +732,15 @@ const P = {
 
 /* ===== QUESTIONS (bilingual) ===== */
 const QUESTIONS = [
+  {id:"q0",
+    text:   "What type of fragrance are you looking for?",
+    textAr: "ما نوع العطر الذي تبحث عنه؟",
+    opts:[
+      {id:"perfume", label:"Perfume — spray bottle",            labelAr:"عطر شخصي للجسم — رذاذ"},
+      {id:"oil",     label:"Oud oil — direct skin application", labelAr:"دهن عود — يُطبّق على الجلد مباشرة"},
+      {id:"both",    label:"I'm open to both",                  labelAr:"مفتوح للاثنين"}
+    ]
+  },
   {id:"q1",
     text:   "What are you looking for?",
     textAr: "ما الذي يقودك في هذه الرحلة العطرية؟",
@@ -796,6 +805,14 @@ const QUESTIONS = [
 function scoreProduct(pid, a){
   const p = P[pid];
   let s = 0;
+
+  /* q0 — product type filter (40pts) */
+  if(a.q0 === "perfume"){
+    s += (p.category === "Oud Oil") ? -40 : 0;
+  } else if(a.q0 === "oil"){
+    s += (p.category === "Oud Oil") ? 40 : -40;
+  }
+  /* q0=both: no penalty/bonus */
 
   /* q1 — usage type */
   if(a.q1 === "home"){

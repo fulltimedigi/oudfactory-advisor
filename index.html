@@ -806,11 +806,11 @@ function scoreProduct(pid, a){
   const p = P[pid];
   let s = 0;
 
-  /* q0 — product type filter (40pts) */
+  /* q0 — product type filter (hard gate) */
   if(a.q0 === "perfume"){
-    s += (p.category === "Oud Oil") ? -40 : 0;
+    if(p.category === "Oud Oil") return -999;   // oils never shown when user picks perfume
   } else if(a.q0 === "oil"){
-    s += (p.category === "Oud Oil") ? 40 : -40;
+    if(p.category !== "Oud Oil") return -999;   // perfumes never shown when user picks oil
   }
   /* q0=both: no penalty/bonus */
 

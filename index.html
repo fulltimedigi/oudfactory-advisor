@@ -1046,6 +1046,41 @@ function renderResult(){
     }).join("");
   }
 
+  function buildSwipeDeck(){
+    const deckItems = ranked.slice(3);
+    if(!deckItems.length) return '';
+    const cards = deckItems.map((item, idx) => {
+      const pd = P[item.id];
+      const name = pName(pd);
+      const cat = currentLang==='ar' && pd.categoryAr ? pd.categoryAr : pd.category;
+      const tagsHtml = (currentLang==='ar' && pd.tagsAr ? pd.tagsAr : pd.tags).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('');
+      const zIndex = deckItems.length - idx;
+      const offset = Math.min(idx, 3) * 3;
+      return `<div class="swipe-card" data-id="${item.id}" data-idx="${idx}"
+        style="z-index:${zIndex};transform:rotate(${idx%2===0?offset:-offset*0.5}deg) translateY(${offset*2}px)">
+        <div class="swipe-overlay like">✓</div>
+        <div class="swipe-overlay nope">✕</div>
+        <div class="sc-name">${name}</div>
+        <div class="sc-cat">${cat}</div>
+        <div class="sc-price">AED ${pd.sale}${pd.was ? ` <span style="text-decoration:line-through;color:var(--muted2);font-size:11px">AED ${pd.was}</span>` : ''}</div>
+        <div class="sc-tags">${tagsHtml}</div>
+      </div>`;
+    }).join('');
+    const remaining = deckItems.length;
+    return `
+    <div class="swipe-section">
+      <div class="swipe-title">${l.swipeTitle}</div>
+      <div class="swipe-hint">${l.swipeHint}</div>
+      <div class="swipe-deck" id="swipeDeck">${cards}</div>
+      <div class="swipe-counter" id="swipeCounter">${remaining} ${currentLang==='ar'?'منتج متبقي':'products remaining'}</div>
+      <div class="swipe-actions">
+        <button class="swipe-btn nope" onclick="swipeAction('left')" title="Skip">✕</button>
+        <button class="swipe-btn like" onclick="swipeAction('right')" title="Like">✓</button>
+      </div>
+      <div class="swipe-done" id="swipeDone">${l.swipeDone}</div>
+    </div>`;
+  }
+
   const waMsg = encodeURIComponent(
     currentLang==='ar'
       ? `مرحباً، أنا مهتم بـ ${pName(top)} من Oud Factory. هل يمكنكم مساعدتي؟`

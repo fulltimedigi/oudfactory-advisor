@@ -1137,9 +1137,11 @@ function swipeAction(dir){
 }
 
 function animateSwipe(card, dir){
-  const x = dir === 'right' ? 400 : -400;
+  const isRTL = currentLang === 'ar';
+  const effectiveDir = isRTL ? (dir === 'right' ? 'left' : 'right') : dir;
+  const x = effectiveDir === 'right' ? 400 : -400;
   card.style.transition = 'transform .35s ease, opacity .35s';
-  card.style.transform = `translateX(${x}px) rotate(${dir==='right'?20:-20}deg)`;
+  card.style.transform = `translateX(${x}px) rotate(${effectiveDir==='right'?20:-20}deg)`;
   card.style.opacity = '0';
   // show overlay
   const overlay = card.querySelector(`.swipe-overlay.${dir==='right'?'like':'nope'}`);
@@ -1233,7 +1235,10 @@ function sendSwipeData(pid, action, topResult){
     isDragging = false;
     const dx = x - startX;
     if(Math.abs(dx) > 80){
-      animateSwipe(activeCard, dx > 0 ? 'right' : 'left');
+      const swipeDir = currentLang === 'ar'
+        ? (dx > 0 ? 'left' : 'right')   // RTL: drag right = visual left = nope
+        : (dx > 0 ? 'right' : 'left');
+      animateSwipe(activeCard, swipeDir);
     } else {
       activeCard.style.transition = 'transform .3s';
       activeCard.style.transform = '';

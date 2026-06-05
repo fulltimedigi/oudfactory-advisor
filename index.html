@@ -299,6 +299,46 @@
   .site-footer a{color:var(--muted);text-decoration:none}
   .site-footer a:hover{color:var(--gold)}
   body.lang-ar .site-footer{letter-spacing:0;font-family:'Tajawal',sans-serif;font-size:13px}
+
+  /* ===== SWIPE DECK ===== */
+  .swipe-section{margin-top:32px}
+  .swipe-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;text-align:center}
+  .swipe-hint{font-size:12px;color:var(--muted);text-align:center;margin-bottom:20px}
+  .swipe-deck{position:relative;height:185px;margin:0 auto;max-width:340px}
+  .swipe-card{
+    position:absolute;top:0;left:0;right:0;
+    background:var(--card2);border:1px solid var(--border);
+    border-radius:14px;padding:18px 20px;
+    cursor:grab;user-select:none;
+    touch-action:none;
+  }
+  .swipe-card:active{cursor:grabbing}
+  .swipe-card.gone{display:none}
+  .swipe-card .sc-name{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .swipe-card .sc-cat{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .swipe-card .sc-price{font-size:13px;color:var(--muted);margin-bottom:8px}
+  .swipe-card .sc-tags{display:flex;flex-wrap:wrap;gap:5px}
+  .swipe-overlay{
+    position:absolute;top:14px;
+    font-size:18px;font-weight:800;
+    opacity:0;
+    pointer-events:none;
+    border-radius:6px;padding:3px 10px;
+  }
+  .swipe-overlay.like{right:14px;color:#4ade80;border:2px solid #4ade80}
+  .swipe-overlay.nope{left:14px;color:#f87171;border:2px solid #f87171}
+  .swipe-actions{display:flex;justify-content:center;gap:24px;margin-top:16px}
+  .swipe-btn{
+    width:52px;height:52px;border-radius:50%;border:none;
+    font-size:20px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .15s;background:var(--card2);
+  }
+  .swipe-btn:hover{transform:scale(1.1)}
+  .swipe-btn.nope{border:1.5px solid #f87171;color:#f87171}
+  .swipe-btn.like{border:1.5px solid #4ade80;color:#4ade80}
+  .swipe-done{text-align:center;padding:20px 0;color:var(--muted);font-size:13px;display:none}
+  .swipe-counter{text-align:center;font-size:11px;color:var(--muted2);margin-top:8px}
 </style>
 </head>
 <body>
@@ -375,6 +415,11 @@ const LANG = {
     shopBtn: "Shop Now",
     whatsappBtn: "Ask on WhatsApp",
     retakeBtn: "Retake Quiz",
+    swipeTitle: "EXPLORE MORE",
+    swipeHint: "Swipe right if you like it · Swipe left to skip",
+    swipeDone: "You've explored all products! Check your matches above.",
+    likeEmoji: "👍",
+    nopeEmoji: "👎",
     saleLabel: "SALE",
     wasLabel: "was",
     breadHome: "Home",
@@ -1032,8 +1077,7 @@ function renderResult(){
     </div>
     <div class="section-label">${l.alternativesLabel}</div>
     ${altCard(1)}${altCard(2)}
-    <div class="section-label">${l.allLabel}</div>
-    ${remainingCards()}
+    ${buildSwipeDeck()}
     <div class="divider"></div>
     <button class="btn btn-ghost" id="restart">${l.retakeBtn}</button>`;
 
@@ -1044,6 +1088,128 @@ function toggleCard(el){
   const d = el.querySelector(".prod-card-detail");
   if(d) d.classList.toggle("open");
 }
+
+/* ===== SWIPE LOGIC ===== */
+let swipeData = []; // {productId, action: 'like'|'dislike', topResult}
+
+function swipeAction(dir){
+  const deck = document.getElementById('swipeDeck');
+  if(!deck) return;
+  const cards = [...deck.querySelectorAll('.swipe-card:not(.gone)')];
+  if(!cards.length) return;
+  const top = cards[cards.length-1];
+  animateSwipe(top, dir);
+}
+
+function animateSwipe(card, dir){
+  const x = dir === 'right' ? 400 : -400;
+  card.style.transition = 'transform .35s ease, opacity .35s';
+  card.style.transform = `translateX(${x}px) rotate(${dir==='right'?20:-20}deg)`;
+  card.style.opacity = '0';
+  // show overlay
+  const overlay = card.querySelector(`.swipe-overlay.${dir==='right'?'like':'nope'}`);
+  if(overlay) overlay.style.opacity = '1';
+  // record
+  const pid = card.dataset.id;
+  const action = dir === 'right' ? 'like' : 'dislike';
+  const topResult = state.ranked[0]?.id || '';
+  swipeData.push({productId: pid, action, topResult});
+  sendSwipeData(pid, action, topResult);
+  setTimeout(()=>{
+    card.classList.add('gone');
+    updateSwipeCounter();
+  }, 350);
+}
+
+function updateSwipeCounter(){
+  const deck = document.getElementById('swipeDeck');
+  const counter = document.getElementById('swipeCounter');
+  const done = document.getElementById('swipeDone');
+  if(!deck) return;
+  const remaining = deck.querySelectorAll('.swipe-card:not(.gone)').length;
+  if(counter) counter.textContent = remaining + (currentLang==='ar' ? ' منتج متبقي' : ' products remaining');
+  if(remaining === 0){
+    if(counter) counter.style.display = 'none';
+    if(done) done.style.display = 'block';
+    document.querySelectorAll('.swipe-btn').forEach(b=>b.style.display='none');
+  }
+}
+
+function sendSwipeData(pid, action, topResult){
+  if(!LEAD_ENDPOINT) return;
+  const pd = P[pid];
+  fetch(LEAD_ENDPOINT, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      type: 'swipe',
+      product: pd ? pd.n : pid,
+      productId: pid,
+      action,
+      topResult: P[topResult] ? P[topResult].n : topResult,
+      timestamp: new Date().toISOString(),
+      lang: currentLang
+    })
+  }).catch(()=>{});
+}
+
+// Touch/drag support for swipe cards
+(function initSwipeTouch(){
+  let startX, startY, isDragging = false, activeCard = null;
+
+  function getTopCard(){
+    const deck = document.getElementById('swipeDeck');
+    if(!deck) return null;
+    const cards = [...deck.querySelectorAll('.swipe-card:not(.gone)')];
+    return cards[cards.length-1] || null;
+  }
+
+  document.addEventListener('mousedown', e=>{
+    const card = e.target.closest('.swipe-card');
+    if(!card) return;
+    isDragging = true; activeCard = card;
+    startX = e.clientX; startY = e.clientY;
+    card.style.transition = 'none';
+  });
+
+  document.addEventListener('touchstart', e=>{
+    const card = e.target.closest('.swipe-card');
+    if(!card) return;
+    isDragging = true; activeCard = card;
+    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    card.style.transition = 'none';
+  }, {passive:true});
+
+  function onMove(x, y){
+    if(!isDragging || !activeCard) return;
+    const dx = x - startX;
+    const rot = dx * 0.08;
+    activeCard.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+    const likeO = activeCard.querySelector('.swipe-overlay.like');
+    const nopeO = activeCard.querySelector('.swipe-overlay.nope');
+    if(likeO) likeO.style.opacity = dx > 30 ? Math.min((dx-30)/60,1) : 0;
+    if(nopeO) nopeO.style.opacity = dx < -30 ? Math.min((-dx-30)/60,1) : 0;
+  }
+
+  document.addEventListener('mousemove', e=>{ if(isDragging) onMove(e.clientX, e.clientY); });
+  document.addEventListener('touchmove', e=>{ if(isDragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+
+  function onEnd(x){
+    if(!isDragging || !activeCard) return;
+    isDragging = false;
+    const dx = x - startX;
+    if(Math.abs(dx) > 80){
+      animateSwipe(activeCard, dx > 0 ? 'right' : 'left');
+    } else {
+      activeCard.style.transition = 'transform .3s';
+      activeCard.style.transform = '';
+      activeCard.querySelectorAll('.swipe-overlay').forEach(o=>o.style.opacity=0);
+    }
+    activeCard = null;
+  }
+
+  document.addEventListener('mouseup', e=>onEnd(e.clientX));
+  document.addEventListener('touchend', e=>onEnd(e.changedTouches[0].clientX));
+})();
 
 /* ===== INIT ===== */
 state.phase = 'hero';

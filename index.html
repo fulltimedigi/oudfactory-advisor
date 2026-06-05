@@ -380,6 +380,68 @@
 /* ===== LEAD COLLECTION — paste your Google Apps Script Web App URL below ===== */
 const LEAD_ENDPOINT = ""; // e.g. "https://script.google.com/macros/s/YOUR_ID/exec"
 
+/* ===== SHOPIFY STOREFRONT API ===== */
+const SHOPIFY_DOMAIN   = "oud-factory.myshopify.com";
+const SHOPIFY_TOKEN    = "34f268d0dff3b46e9f6246ccfd1d3e24";
+const SHOPIFY_API_VER  = "2024-01";
+
+async function fetchShopifyPrices() {
+  /* Build a handles-to-id map: Shopify handle → P key */
+  const handleMap = {};
+  Object.entries(P).forEach(([key, p]) => {
+    const handle = p.url.split("/products/")[1];
+    if (handle) handleMap[handle] = key;
+  });
+
+  const handles = Object.keys(handleMap);
+
+  /* GraphQL — fetch all products in one request using productByHandle */
+  /* Aliases must not start with a digit — prefix with "p_" */
+  const toAlias = h => "p_" + h.replace(/-/g, "_");
+
+  const queries = handles.map(h =>
+    `${toAlias(h)}: productByHandle(handle: "${h}") { priceRange { minVariantPrice { amount } } compareAtPriceRange { maxVariantPrice { amount } } availableForSale }`
+  ).join("\n");
+
+  const body = JSON.stringify({ query: `{ ${queries} }` });
+
+  try {
+    const res = await fetch(
+      `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VER}/graphql.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": SHOPIFY_TOKEN
+        },
+        body
+      }
+    );
+    if (!res.ok) return;
+    const json = await res.json();
+    const data = json.data || {};
+
+    handles.forEach(h => {
+      const alias = toAlias(h);
+      const prod  = data[alias];
+      const key   = handleMap[h];
+      if (!prod || !P[key]) return;
+
+      const saleAmt = parseFloat(prod.priceRange?.minVariantPrice?.amount || 0);
+      const wasAmt  = parseFloat(prod.compareAtPriceRange?.maxVariantPrice?.amount || 0);
+      const avail   = prod.availableForSale;
+
+      if (saleAmt > 0) P[key].sale = saleAmt.toFixed(2);
+      if (wasAmt  > 0) P[key].was  = wasAmt.toFixed(2);
+      P[key].available = avail;  /* true / false */
+    });
+
+    console.log("[Oud Factory] Shopify prices updated ✓");
+  } catch(e) {
+    console.warn("[Oud Factory] Shopify fetch failed — using defaults", e);
+  }
+}
+
 function sendLead(topProduct, topScore) {
   if (!LEAD_ENDPOINT) return;
   try {
@@ -908,7 +970,10 @@ function scoreProduct(pid, a){
 }
 
 function rankProducts(a){
-  return Object.keys(P).map(id=>({id,score:scoreProduct(id,a)})).sort((a,b)=>b.score-a.score);
+  return Object.keys(P)
+    .filter(id => P[id].available !== false)  /* hide out-of-stock products */
+    .map(id=>({id,score:scoreProduct(id,a)}))
+    .sort((a,b)=>b.score-a.score);
 }
 
 function matchReason(pid, a){
@@ -1248,7 +1313,10 @@ function sendSwipeData(pid, action, topResult){
 
 /* ===== INIT ===== */
 state.phase = 'hero';
-applyLang(); // applyLang detects phase and calls renderHero()
+/* Fetch live Shopify prices then init — fall back immediately on error */
+fetchShopifyPrices().finally(() => {
+  applyLang(); // applyLang detects phase and calls renderHero()
+});
 </script>
 </body>
 </html>

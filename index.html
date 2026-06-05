@@ -842,7 +842,11 @@ function scoreProduct(pid, a){
   const om = {daily:["daily","home"],events:["events","evening","gift"],both:["daily","events","home","gift","evening"]};
   s += (om[a.q2]||[]).some(o=>p.occasions.includes(o))?12:0;
 
-  /* q6 — budget (8pts) — eco<$450, mid $450-$750, high>$750, luxury treated as high */
+  /* q6 — budget hard gate + soft scoring */
+  const actualPrice = parseFloat(p.sale);
+  if(a.q6 === "eco"  && actualPrice > 450)  return -999;  // over budget — never show
+  if(a.q6 === "mid"  && actualPrice > 750)  return -999;  // over budget — never show
+  if(a.q6 === "high" && actualPrice < 450)  s -= 4;       // under budget soft penalty only
   const effectiveTier = p.tier === "luxury" ? "high" : p.tier;
   const bm = {eco:{eco:8,mid:4,high:0},mid:{eco:4,mid:8,high:2},high:{eco:2,mid:4,high:8}};
   s += ((bm[a.q6]||{})[effectiveTier]||4);
